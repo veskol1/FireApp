@@ -1,6 +1,7 @@
 package com.example.fireapp;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Movie {
@@ -8,18 +9,19 @@ public class Movie {
     private String movieID;
     private String movieName;
     private String rating;
-    private Map<String,String> dates;
     private Hall hall;
+    private Map<String,String> showTimeMap ;
 
     public Movie(){
     }
 
-    public Movie(String movieID, String movieName, String rating,Map<String,String> dates,Hall hall) {
+    public Movie(String movieID, String movieName, String rating,Hall hall,String day,String hour) {
         this.movieID = movieID;
         this.movieName = movieName;
         this.rating = rating;
-        this.dates=dates;
         this.hall=hall;
+        showTimeMap = new HashMap<>();
+        showTimeMap.put(day,hour);
     }
 
     public String getMovieID() {
@@ -34,8 +36,8 @@ public class Movie {
         return rating;
     }
 
-    public Map<String,String> getMap(){
-        return dates;
+    public Map<String,String> getShowTimeMap(){
+        return showTimeMap;
     }
 
     public Hall getHall(){

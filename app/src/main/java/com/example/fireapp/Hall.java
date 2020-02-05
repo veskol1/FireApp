@@ -2,12 +2,12 @@ package com.example.fireapp;
 
 public class Hall {
     private String hallName;
-    private String row;
-    private String column;
+    private int row;
+    private int column;
 
     public Hall(){}
 
-    public Hall(String hallName, String row, String column) {
+    public Hall(String hallName, int row, int column) {
         this.hallName = hallName;
         this.row = row;
         this.column = column;
@@ -18,11 +18,11 @@ public class Hall {
         return hallName;
     }
 
-    public String getRow() {
+    public int getRow() {
         return row;
     }
 
-    public String getColumn() {
+    public int getColumn() {
         return column;
     }
 }
