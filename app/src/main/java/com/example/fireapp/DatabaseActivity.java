@@ -3,6 +3,7 @@ package com.example.fireapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,45 +19,46 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class DatabaseActivity extends AppCompatActivity {
-    private TextView textView;
+    private TextView editText1;
+    private MaterialButton buttonRef;
     private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database);
-        textView = findViewById(R.id.textView);
+        editText1 = findViewById(R.id.editText1);
+        buttonRef=findViewById(R.id.materialButton);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Movies/vesko");
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("movies");
-
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        buttonRef.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
- //               Log.d("blabla",""+dataSnapshot.getChildren().toString());
-//                Map<String,String> map= (Map)dataSnapshot.child("movies").getValue();
-//                if(map!=null)
-//                    textView.setText(map.get("title"));
-//                    //Toast.makeText(DatabaseActivity.this,"blabla"+map.size(),Toast.LENGTH_LONG).show();
-                for(DataSnapshot ds :dataSnapshot.getChildren()){
-                    String var= ds.child("title").getValue(String.class);
-                    if(var!=null)
-                         textView.append(var);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onClick(View view) {
+                addMovie();
             }
         });
+    }
 
 
+    public void addMovie(){
+        ArrayList<String>arr = new ArrayList<>();
+        arr.add("a");
+        arr.add("b");
+        arr.add("c");
 
-
+        String movieName = editText1.getText().toString();
+        String movieId = mDatabase.push().getKey();
+        Movie movie = new Movie(movieId,movieName,"bla",arr);
+        mDatabase.child(movieId).setValue(movie);
 
     }
+
+
+
 }
