@@ -20,6 +20,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseActivity extends AppCompatActivity {
@@ -34,7 +35,7 @@ public class DatabaseActivity extends AppCompatActivity {
         editText1 = findViewById(R.id.editText1);
         buttonRef=findViewById(R.id.materialButton);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Movies/vesko");
+        mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
 
 
         buttonRef.setOnClickListener(new View.OnClickListener() {
@@ -47,14 +48,14 @@ public class DatabaseActivity extends AppCompatActivity {
 
 
     public void addMovie(){
-        ArrayList<String>arr = new ArrayList<>();
-        arr.add("a");
-        arr.add("b");
-        arr.add("c");
+        Map<String,String> dates = new HashMap<>();
+        dates.put("day1","18:00");
+        dates.put("day2","20:00");
+        Hall hall1 = new Hall("hall1","6","7");
 
         String movieName = editText1.getText().toString();
         String movieId = mDatabase.push().getKey();
-        Movie movie = new Movie(movieId,movieName,"bla",arr);
+        Movie movie = new Movie(movieId,movieName,"bla",dates,hall1);
         mDatabase.child(movieId).setValue(movie);
 
     }

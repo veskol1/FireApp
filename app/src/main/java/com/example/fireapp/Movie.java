@@ -1,22 +1,25 @@
 package com.example.fireapp;
 
-import java.util.ArrayList;
+
+import java.util.Map;
 
 public class Movie {
 
     private String movieID;
     private String movieName;
     private String rating;
-    private ArrayList<String> arr;
+    private Map<String,String> dates;
+    private Hall hall;
 
     public Movie(){
     }
 
-    public Movie(String movieID, String movieName, String rating,ArrayList<String> arr) {
+    public Movie(String movieID, String movieName, String rating,Map<String,String> dates,Hall hall) {
         this.movieID = movieID;
         this.movieName = movieName;
         this.rating = rating;
-        this.arr=arr;
+        this.dates=dates;
+        this.hall=hall;
     }
 
     public String getMovieID() {
@@ -31,7 +34,11 @@ public class Movie {
         return rating;
     }
 
-    public ArrayList<String> getArr(){
-        return arr;
+    public Map<String,String> getMap(){
+        return dates;
+    }
+
+    public Hall getHall(){
+        return hall;
     }
 }
