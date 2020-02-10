@@ -1,5 +1,6 @@
 package com.example.fireapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,92 +8,120 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-public class DatabaseActivity extends AppCompatActivity {
-    private TextView editText1;
-    private MaterialButton buttonRef;
+public class DatabaseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    public final String PUT_EXTRA_SET="SENT_HALL_ID_FROM_LOGIN";
+    private TextView editText1,hallNameTv,hallRowTv,hallColumnTv;
+    private MaterialButton buttonAddMovie, buttonAddHall;
     private DatabaseReference mDatabase;
     private Spinner spin;
+    private HashSet<String> hallIdsSet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database);
-        editText1 = findViewById(R.id.editTextMovieName);
-        buttonRef=findViewById(R.id.materialButton);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
 
-        // Typecasting the variable here
-        spin = (Spinner) findViewById(R.id.spn1);
 
-// Array of Months acting as a data pump
-        String[] objects = { "January", "Feburary", "March", "April", "May",
-                "June", "July", "August", "September", "October", "November","December" };
+        Intent intent = getIntent();
+        hallIdsSet = (HashSet<String>)intent.getSerializableExtra(PUT_EXTRA_SET);
+        List<String> hallIdsList = new ArrayList<>(hallIdsSet);
 
-// Declaring an Adapter and initializing it to the data pump
-        ArrayAdapter adapter = new ArrayAdapter(
-                getApplicationContext(),android.R.layout.simple_list_item_1 ,objects);
-
-// Setting Adapter to the Spinner
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,hallIdsList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);
-
-// Setting OnItemClickListener to the Spinner
-        //spin.setOnItemSelectedListener(this);
+        spin.setOnItemSelectedListener(this);
 
 
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        buttonRef.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+        buttonAddMovie.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 addMovie();
             }
         });
+
+        buttonAddHall.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addHall();
+            }
+        });
+
     }
-//
-//    // Defining the Callback methods here
-//    public void onItemSelected(AdapterView parent, View view, int pos,
-//                               long id) {
-//        Toast.makeText(getApplicationContext(),
-//                spin.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG)
-//                .show();
-//    }
-//
-//    // Defining the Callback methods here
-//    @Override
-//    public void onNothingSelected(AdapterView arg0) {
-//// TODO Auto-generated method stub
-//
-//    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Object obj = parent.getItemAtPosition(position);
+        Log.d("print",""+obj.toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
 
     public void addMovie(){
-        Hall hall1 = new Hall("hall1",6,7);
 
-        String movieName = editText1.getText().toString();
-        String movieId = mDatabase.push().getKey();
-        Movie movie = new Movie(movieId,movieName,"bla",hall1,"day4","20:00");
-       // mDatabase.child(movieId).setValue(movie);
+        Query query = mDatabase.child("Halls").orderByKey();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        Hall hall = issue.getValue(Hall.class);
+                        Log.d("veskok",""+hall.getHallName());
+                    }
+            }
 
-        //SeatStatus seatStatus = new SeatStatus(movieId,"day4","20:00",hall1);
-       // mDatabase.child("Seating").setValue(seatStatus);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-//        ArrayList<List<Integer>> group = new ArrayList<List<Integer>>();
-//        for(int i = 0; i < 7; i++)
-//        {
-//            group.add(new ArrayList<Integer>());
-//        }
+            }
+        });
+//
+//        mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
+//
+//        String movieName = editText1.getText().toString();
+//        String movieId = mDatabase.push().getKey();
+//        Movie movie = new Movie(movieName,"5/10","hall1","day4","20:00");
+//        mDatabase.child(movieId).setValue(movie);
+//
+//        mDatabase=mDatabase.child(movieId+"/showTimes");
+//        String seatId = mDatabase.push().getKey();
+//        SeatStatus seatStatus = new SeatStatus(movieId,"day4","20:00",new Hall("hall3",4,5));
+//        mDatabase.child(seatId).setValue(seatStatus);
+
+
+    }
+
+    public void addHall(){
+        String hallName = hallNameTv.getText().toString();
+        int row = Integer.parseInt(hallRowTv.getText().toString());
+        int column = Integer.parseInt(hallColumnTv.getText().toString());
+
+        //Hall hall = new Hall(hallName,row,column);
+        mDatabase = FirebaseDatabase.getInstance().getReference("Halls");
+        String hallId = mDatabase.push().getKey();
+        //mDatabase.child(hallId).setValue(hall);
+
 
     }
 

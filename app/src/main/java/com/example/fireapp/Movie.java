@@ -1,46 +1,57 @@
 package com.example.fireapp;
 
+import java.io.Serializable;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class Movie {
-
-    private String movieID;
+public class Movie implements Serializable {
+    private String movieId;
     private String movieName;
+    private String genre;
     private String rating;
-    private Hall hall;
-    private Map<String,String> showTimeMap ;
+    private String summary;
+    private String trailerLink;
+    private String posterLink;
+    //private String hallId;
+
 
     public Movie(){
     }
 
-    public Movie(String movieID, String movieName, String rating,Hall hall,String day,String hour) {
-        this.movieID = movieID;
+    public Movie(String movieId,String movieName, String genre, String rating, String summary, String trailerLink, String posterLink) {
+        this.movieId = movieId;
         this.movieName = movieName;
+        this.genre = genre;
         this.rating = rating;
-        this.hall=hall;
-        showTimeMap = new HashMap<>();
-        showTimeMap.put(day,hour);
+        this.summary = summary;
+        this.trailerLink = trailerLink;
+        this.posterLink = posterLink;
+        //this.hallId = hallId;
+
     }
 
-    public String getMovieID() {
-        return movieID;
-    }
+    public String getMovieId() { return movieId; }
 
     public String getMovieName() {
         return movieName;
+    }
+
+    public String getGenre() {
+        return genre;
     }
 
     public String getRating() {
         return rating;
     }
 
-    public Map<String,String> getShowTimeMap(){
-        return showTimeMap;
+    public String getSummary() {
+        return summary;
     }
 
-    public Hall getHall(){
-        return hall;
+    public String getTrailerLink() {
+        return trailerLink;
     }
+
+    public String getPosterLink() { return posterLink; }
+
+    //public String getHallId(){ return hallId; }
+
 }

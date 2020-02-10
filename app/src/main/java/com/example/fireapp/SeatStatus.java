@@ -3,34 +3,48 @@ package com.example.fireapp;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SeatStatus {
-    private String movieID;
+    private String statusId;
+    private String movieId;
     private String date;
     private String hour;
+    private String hallName;
     private Hall hall;
-//    private int[][] seatsHall;
-    private ArrayList<Integer>[][] seatsHall;
+    private List<List<Integer>> seatsHall;
 
-    public SeatStatus(String movieID,String date, String hour, Hall hall){
-        this.movieID=movieID;
-        this.date=date;
-        this.hour=hour;
 
-        int row=hall.getRow();
-        int column=hall.getColumn();
-        Log.d("testoo",""+row);
-        Log.d("testoo",""+column);
+    public SeatStatus(){}
 
-        seatsHall = new ArrayList[row][column];
+    public SeatStatus(String statusId, String movieId, String date, String hour, Hall hall){
+        this.statusId=statusId;
+        this.movieId = movieId;
+        this.date = date;
+        this.hour = hour;
+        this.hallName = hall.getHallName();
+        int row = hall.getRow();
+        int column = hall.getColumn();
+
+
+        // seatsHall = new ArrayList[10][10];
+        seatsHall = new ArrayList<>(row);
         for (int i=0; i<row; i++)
-            for(int j=0; j<column; j++)
-                seatsHall[i][j].add(0);
+            seatsHall.add(new ArrayList<>(column));
+
+        for (int i=0; i<row; i++)
+          for (int j=0; j<column; j++)
+            seatsHall.get(i).add(j,0);
+
+
+        Log.d("veskok",""+seatsHall.get(0).get(1));
 
     }
 
-    public String getMovieID() {
-        return movieID;
+    public String getStatusId() { return statusId; }
+
+    public String getMovieId() {
+        return movieId;
     }
 
     public String getDate() {
@@ -41,11 +55,14 @@ public class SeatStatus {
         return hour;
     }
 
+    public String getHallName(){ return hallName;}
+
     public Hall getHall() {
         return hall;
     }
 
-    public ArrayList[][] getSeatsHall() {
+    public List<List<Integer>> getSeatsHall() {
         return seatsHall;
     }
+
 }

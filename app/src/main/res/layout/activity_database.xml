@@ -1,52 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-
-    <EditText
-        android:id="@+id/editTextMovieName"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="movie name" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextMovieHall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="movie Hall" />
+        <EditText
+            android:id="@+id/editTextHallName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:hint="Hall name" />
 
-    <EditText
-        android:id="@+id/editTextMovieDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="movie Date" />
+        <EditText
+            android:id="@+id/editTextHallRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:hint="row Hall" />
 
-    <EditText
-        android:id="@+id/editTextMovieHour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="movie Hour" />
+        <EditText
+            android:id="@+id/editTextHallColumn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:hint="column Hall" />
 
-    <Spinner
-        android:id="@+id/spn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButtonHall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:text=" Hall"
+            />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="add"
- />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
