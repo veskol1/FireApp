@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeatStatus {
+public class ShowTimes {
     private String statusId;
     private String movieId;
     private String date;
@@ -15,9 +15,9 @@ public class SeatStatus {
     private List<List<Integer>> seatsHall;
 
 
-    public SeatStatus(){}
+    public ShowTimes(){}
 
-    public SeatStatus(String statusId, String movieId, String date, String hour, Hall hall){
+    public ShowTimes(String statusId, String movieId, String date, String hour, Hall hall){
         this.statusId=statusId;
         this.movieId = movieId;
         this.date = date;
@@ -35,10 +35,6 @@ public class SeatStatus {
         for (int i=0; i<row; i++)
           for (int j=0; j<column; j++)
             seatsHall.get(i).add(j,0);
-
-
-        Log.d("veskok",""+seatsHall.get(0).get(1));
-
     }
 
     public String getStatusId() { return statusId; }

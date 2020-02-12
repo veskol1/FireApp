@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
     private ArrayList<ExampleItem> exampleItemList;
+    private ArrayList<Movie> movieLists;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder{
         public ImageView mViewImage;
@@ -27,8 +28,12 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         }
     }
 
-    public ExampleAdapter(ArrayList<ExampleItem> exampleItems){
-        exampleItemList= exampleItems;
+//    public ExampleAdapter(ArrayList<ExampleItem> exampleItems){
+//        exampleItemList= exampleItems;
+//    }
+
+    public ExampleAdapter(ArrayList<Movie> movieList){
+        this.movieLists = movieList;
     }
 
 
@@ -43,15 +48,19 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
-            ExampleItem currentItem = exampleItemList.get(position);
-            holder.mViewImage.setImageResource(currentItem.getmImage());
-            holder.mTextView1.setText(currentItem.getMtext1());
-            holder.mTextView2.setText(currentItem.getMtext2());
+            //ExampleItem currentItem = exampleItemList.get(position);
+            Movie currentMovie = movieLists.get(position);
+           // holder.mViewImage.setImageResource(currentMovie.getPosterLink());
+            holder.mTextView1.setText(currentMovie.getMovieId());
+            holder.mTextView2.setText(currentMovie.getGenre());
     }
 
     @Override
     public int getItemCount() {
-        return exampleItemList.size();
+
+       // return exampleItemList.size();
+        return movieLists.size();
+
     }
 
     public void filterList(ArrayList<ExampleItem> filteredList){

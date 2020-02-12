@@ -2,7 +2,6 @@ package com.example.fireapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,7 +17,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -29,10 +27,10 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
     private MaterialButton btnAddMovie;
     private DatabaseReference mDatabase;
     private Spinner spinHalls, spinDays, spinHours;
-    private String hallSelected, daySelected, hourSelected;
-    private Hall selectedHallObj; //get the selected spinner Object of Hall
-    private boolean updateLegal = true;
-    private ArrayList<Hall> hallsArrayList;
+    private String hallSelected, daySelected, hourSelected; // holds the selected hall/day/hour spinners strings
+    private Hall selectedHallObj; //holds the selected spinner Object of Hall
+    private boolean updateIsLegal = true; //approves if on the same date & hour & hall , the movie can be added to DB
+    private ArrayList<Hall> hallsArrayList; //holds the halls that are already in DB
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,26 +46,19 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         spinHalls = findViewById(R.id.spn_halls);
         spinDays = findViewById(R.id.spn_days);
         spinHours = findViewById(R.id.spn_hours);
-
         btnAddMovie = findViewById(R.id.add_movie_button);
+
         updateSpinners();
 
         btnAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findAllShowsWithSameHall(hallSelected);
+                getDataFromDb();
             }
         });
     }
 
-    public void findAllShowsWithSameHall(String hallSelectedName){
-        String movieName = movieNameEditText.getText().toString();
-        String movieGenre = movieGenreEditText.getText().toString();
-        String movieRating = movieRatingEditText.getText().toString();
-        String movieSummary = movieSummaryEditText.getText().toString();
-        String movieTrailer = movieTrailerEditText.getText().toString();
-        String moviePoster = moviePosterEditText.getText().toString();
-
+    public void getDataFromDb(){
         mDatabase= FirebaseDatabase.getInstance().getReference("ShowTimes");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -76,35 +67,46 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                     String hall = ds.child("hallName").getValue(String.class);
                     String date = ds.child("date").getValue(String.class);
                     String hour = ds.child("hour").getValue(String.class);
-                    if(date.equals(daySelected) && hour.equals(hourSelected) && hall.equals(hallSelectedName)) {
-                        updateLegal = false;
-                        Toast.makeText(AddMovieActivity.this, "Please choose another date/hour/hall", Toast.LENGTH_SHORT).show();
+                    if(date.equals(daySelected) && hour.equals(hourSelected) && hall.equals(hallSelected)) {
+                        updateIsLegal = false;
+                        Toast.makeText(AddMovieActivity.this, "Can't add movie to Database! \nPlease choose another date, hour, hall", Toast.LENGTH_SHORT).show();
                         break;
                     }
-                    else {
-                        Toast.makeText(AddMovieActivity.this, "update change to legal", Toast.LENGTH_SHORT).show();
-                        updateLegal = true;
-                    }
+                    else
+                        updateIsLegal = true;
                 }
 
-                if (updateLegal) {
-                    mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
-                    String generatedMovieId = mDatabase.push().getKey();
-                    Movie movie = new Movie(generatedMovieId, movieName, movieGenre, movieRating, movieSummary, movieTrailer, moviePoster);
-                    mDatabase.child(generatedMovieId).setValue(movie);
-
-                    mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
-                    String generatedShowId = mDatabase.push().getKey();
-                    SeatStatus seatStatus = new SeatStatus(generatedShowId, generatedMovieId, daySelected, hourSelected, selectedHallObj);
-                    mDatabase.child(generatedShowId).setValue(seatStatus);
-                }
+                if (updateIsLegal)
+                    AddMovieToDb();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(AddMovieActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void AddMovieToDb(){
+        /*get inserted info from Edit Texts */
+        String movieName = movieNameEditText.getText().toString();
+        String movieGenre = movieGenreEditText.getText().toString();
+        String movieRating = movieRatingEditText.getText().toString();
+        String movieSummary = movieSummaryEditText.getText().toString();
+        String movieTrailer = movieTrailerEditText.getText().toString();
+        String moviePoster = moviePosterEditText.getText().toString();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
+        String generatedMovieId = mDatabase.push().getKey();
+        Movie movie = new Movie(generatedMovieId, movieName, movieGenre, movieRating, movieSummary, movieTrailer, moviePoster);
+        mDatabase.child(generatedMovieId).setValue(movie);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
+        String generatedShowId = mDatabase.push().getKey();
+        ShowTimes showTimes = new ShowTimes(generatedShowId, generatedMovieId, daySelected, hourSelected, selectedHallObj);
+        mDatabase.child(generatedShowId).setValue(showTimes);
+
+        Toast.makeText(AddMovieActivity.this, "Movie was successfully added to Database", Toast.LENGTH_SHORT).show();
 
     }
 
