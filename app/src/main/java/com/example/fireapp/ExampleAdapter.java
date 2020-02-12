@@ -1,5 +1,6 @@
 package com.example.fireapp;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -18,13 +21,11 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public static class ExampleViewHolder extends RecyclerView.ViewHolder{
         public ImageView mViewImage;
         public TextView mTextView1;
-        public TextView mTextView2;
 
         public ExampleViewHolder(@NonNull View itemView) {
             super(itemView);
             mViewImage = itemView.findViewById(R.id.image_view);
             mTextView1 = itemView.findViewById(R.id.text1);
-            mTextView2 = itemView.findViewById(R.id.text2);
         }
     }
 
@@ -50,9 +51,13 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
             //ExampleItem currentItem = exampleItemList.get(position);
             Movie currentMovie = movieLists.get(position);
-           // holder.mViewImage.setImageResource(currentMovie.getPosterLink());
-            holder.mTextView1.setText(currentMovie.getMovieId());
-            holder.mTextView2.setText(currentMovie.getGenre());
+            //holder.mViewImage.setImageResource(currentMovie.getPosterLink());
+            //holder.mTextView1.setText(currentMovie.getMovieId());
+           // holder.mTextView2.setText(currentMovie.getGenre());
+             Picasso.get()
+                     .load("https://lh3.googleusercontent.com/proxy/z_p1A2Sd-qPMCGQRtyXLKPQM8KZ1yOYxXybWDrUHe4429BElFQ2OEAATccnkV0Ps86OA8GqQSC58f-xxPZdAEcrOHNhPpg-YTY8").placeholder(R.drawable.ic_android).error(R.drawable.ic_assistant)
+                     .fit().centerCrop().into(holder.mViewImage);
+
     }
 
     @Override
