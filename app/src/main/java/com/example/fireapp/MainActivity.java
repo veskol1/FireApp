@@ -142,13 +142,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void filter(String text){
-        ArrayList<ExampleItem> filteredList = new ArrayList<>();
-        for(ExampleItem item : exampleList){
-            if(item.getMtext1().toLowerCase().contains(text.toLowerCase()))
-                filteredList.add(item);
+//        ArrayList<ExampleItem> filteredList = new ArrayList<>();
+//        for(ExampleItem item : exampleList){
+//            if(item.getMtext1().toLowerCase().contains(text.toLowerCase()))
+//                filteredList.add(item);
+//        }
+//
+//        mAdapter.filterList(filteredList);
+
+        ArrayList<Movie> filteredList = new ArrayList<>();
+        for(Movie movie : moviesList){
+            if(movie.getMovieName().toLowerCase().contains(text.toLowerCase()))
+                filteredList.add(movie);
         }
 
         mAdapter.filterList(filteredList);
+
     }
 
 }

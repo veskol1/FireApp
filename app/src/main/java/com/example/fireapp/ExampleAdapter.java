@@ -1,6 +1,7 @@
 package com.example.fireapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,6 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         }
     }
 
-//    public ExampleAdapter(ArrayList<ExampleItem> exampleItems){
-//        exampleItemList= exampleItems;
-//    }
 
     public ExampleAdapter(ArrayList<Movie> movieList){
         this.movieLists = movieList;
@@ -49,14 +47,16 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
-            //ExampleItem currentItem = exampleItemList.get(position);
             Movie currentMovie = movieLists.get(position);
-            //holder.mViewImage.setImageResource(currentMovie.getPosterLink());
-            //holder.mTextView1.setText(currentMovie.getMovieId());
-           // holder.mTextView2.setText(currentMovie.getGenre());
+            holder.mTextView1.setText(currentMovie.getMovieName());
+
+        Log.d("koko",""+currentMovie.getPosterLink());
+
+
              Picasso.get()
-                     .load("https://lh3.googleusercontent.com/proxy/z_p1A2Sd-qPMCGQRtyXLKPQM8KZ1yOYxXybWDrUHe4429BElFQ2OEAATccnkV0Ps86OA8GqQSC58f-xxPZdAEcrOHNhPpg-YTY8").placeholder(R.drawable.ic_android).error(R.drawable.ic_assistant)
-                     .fit().centerCrop().into(holder.mViewImage);
+                     .load(currentMovie.getPosterLink())
+                     .error(R.drawable.ic_assistant)
+                     .into(holder.mViewImage);
 
     }
 
@@ -68,8 +68,12 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     }
 
-    public void filterList(ArrayList<ExampleItem> filteredList){
-        exampleItemList=filteredList;
+//    public void filterList(ArrayList<ExampleItem> filteredList){
+//        exampleItemList=filteredList;
+//        notifyDataSetChanged();
+//    }
+    public void filterList(ArrayList<Movie> filteredList){
+        movieLists=filteredList;
         notifyDataSetChanged();
     }
 }
