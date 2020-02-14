@@ -17,10 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity android:name=".MainActivity" android:parentActivityName=".LogInActivity" android:label="Welcome!"></activity>-->
-        <activity android:name=".LogInActivity" android:parentActivityName=".MainActivity" android:label="Administration Login"></activity>
-        <activity android:name=".AdministrationActivity" android:parentActivityName=".LogInActivity" android:label="Administration screen"></activity>
-        <activity android:name=".AddMovieActivity" android:parentActivityName=".LogInActivity" android:label="Add movie to database"></activity>
- </application>
+<!--        <activity android:name=".MainActivity" android:parentActivityName=".AdminLoginActivity" android:label="Welcome!"></activity>-->
+        <activity android:name=".AdminLoginActivity" android:parentActivityName=".MainActivity" android:label="Administration Login"></activity>
+        <activity android:name=".AdministrationActivity" android:parentActivityName=".AdminLoginActivity" android:label="Administration screen"></activity>
+        <activity android:name=".AddMovieActivity" android:parentActivityName=".AdministrationActivity" android:label="Add movie to database"></activity>
+        <activity android:name=".DetailedMovieActivity" android:parentActivityName=".MainActivity" android:label="modie detailed"></activity>
+    </application>
 
 </manifest>

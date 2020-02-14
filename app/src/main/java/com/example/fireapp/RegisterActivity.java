@@ -1,6 +1,5 @@
 package com.example.fireapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
     private EditText usernameEditText,passwordEditText;
     private Button regButton;
@@ -53,7 +52,7 @@ public class Register extends AppCompatActivity {
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         }
                         else{
-                            Toast.makeText(Register.this, "Authentication failed.",
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -70,7 +69,7 @@ public class Register extends AppCompatActivity {
                // myRef.child("Login").child(password).setValue(password);
               //  Toast.makeText(getApplicationContext(),"The user was registered to the database",Toast.LENGTH_LONG).show();
 
-               // Intent intent = new Intent(Register.this,MainActivity.class);
+               // Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
                // startActivity(intent);
             }
         });

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -114,12 +116,12 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
     public void updateSpinners(){
         Intent intent = getIntent(); //load the halls from database on the parent Activity so it can displayed on the spinner
         hallsArrayList = (ArrayList<Hall>)intent.getSerializableExtra(HALL_ARRAY);
-        ArrayList<String> hallNameArrayList = new ArrayList<>();
+        ArrayList<String> filterHallNamesList = new ArrayList<>();
         for(Hall hall : hallsArrayList){
-            hallNameArrayList.add(hall.getHallName());
+            filterHallNamesList.add(hall.getHallName());
         }
 
-        ArrayAdapter hallsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,hallNameArrayList);
+        ArrayAdapter hallsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,filterHallNamesList);
         hallsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinHalls.setAdapter(hallsAdapter);
         spinHalls.setOnItemSelectedListener(this);
