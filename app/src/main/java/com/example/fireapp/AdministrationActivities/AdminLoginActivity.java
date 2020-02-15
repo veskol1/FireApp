@@ -1,4 +1,4 @@
-package com.example.fireapp;
+package com.example.fireapp.AdministrationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LogInActivity extends AppCompatActivity {
+import com.example.fireapp.R;
+
+public class AdminLoginActivity extends AppCompatActivity {
     private EditText usernameLogEditText,passwordLogEditText;
     private TextView regTextView;
     private Button logButton;
@@ -32,7 +34,7 @@ public class LogInActivity extends AppCompatActivity {
                 String username = usernameLogEditText.getText().toString();
                 String password = passwordLogEditText.getText().toString();
                 if (username.equals("Admin") && password.equals("1234")) {
-                    Intent intent = new Intent(LogInActivity.this, AdministrationActivity.class);
+                    Intent intent = new Intent(AdminLoginActivity.this, AdministrationActivity.class);
                     startActivity(intent);
                 }
            }

@@ -10,17 +10,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity android:name=".MainActivity" android:parentActivityName=".LogInActivity" android:label="Welcome!"></activity>-->
-        <activity android:name=".LogInActivity" android:parentActivityName=".MainActivity" android:label="Administration Login"></activity>
-        <activity android:name=".AdministrationActivity" android:parentActivityName=".LogInActivity" android:label="Administration screen"></activity>
-        <activity android:name=".AddMovieActivity" android:parentActivityName=".LogInActivity" android:label="Add movie to database"></activity>
- </application>
+<!--        <activity android:name=".MainActivity" android:parentActivityName=".AdminLoginActivity" android:label="Welcome!"></activity>-->
+        <activity android:name=".AdministrationActivities.AdminLoginActivity" android:parentActivityName=".MainActivity" android:label="Administration Login"></activity>
+        <activity android:name=".AdministrationActivities.AdministrationActivity" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" android:label="Administration screen"></activity>
+        <activity android:name=".AdministrationActivities.AddMovieActivity" android:parentActivityName=".AdministrationActivities.AdministrationActivity" android:label="Add movie to database"></activity>
+        <activity android:name=".Activities.DetailedMovieActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="modie detailed"></activity>
+        <activity android:name=".Activities.SelectSeatsActivity" android:parentActivityName=".Activities.DetailedMovieActivity" android:label="Select seats"></activity>
+    </application>
 
 </manifest>
