@@ -1,4 +1,4 @@
-package com.example.fireapp;
+package com.example.fireapp.AdministrationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fireapp.R;
 
 public class AdminLoginActivity extends AppCompatActivity {
     private EditText usernameLogEditText,passwordLogEditText;

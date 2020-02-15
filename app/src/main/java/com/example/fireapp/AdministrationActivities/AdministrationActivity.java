@@ -1,14 +1,15 @@
-package com.example.fireapp;
+package com.example.fireapp.AdministrationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fireapp.Objects.Hall;
+import com.example.fireapp.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +19,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class AdministrationActivity extends AppCompatActivity{
     public final String HALL_ARRAY = "com.project.arraylist.halls";
@@ -38,7 +38,7 @@ public class AdministrationActivity extends AppCompatActivity{
 
         addMovieButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(AdministrationActivity.this,AddMovieActivity.class);
+                Intent intent = new Intent(AdministrationActivity.this, AddMovieActivity.class);
                 intent.putExtra(HALL_ARRAY,hallsArrayList);
                 startActivity(intent);
             }

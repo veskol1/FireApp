@@ -1,10 +1,11 @@
-package com.example.fireapp;
+package com.example.fireapp.AdministrationActivities;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fireapp.R;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AddHallActivity extends AppCompatActivity {

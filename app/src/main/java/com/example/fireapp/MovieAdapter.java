@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.fireapp.Activities.DetailedMovieActivity;
+import com.example.fireapp.Objects.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
          holder.itemCardView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent intent = new Intent(context,DetailedMovieActivity.class);
+                 Intent intent = new Intent(context, DetailedMovieActivity.class);
                  intent.putExtra("moviename",currentMovie.getMovieName());
                  intent.putExtra("selected.movie",currentMovie);
                  context.startActivity(intent);

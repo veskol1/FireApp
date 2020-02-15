@@ -1,6 +1,6 @@
-package com.example.fireapp;
+package com.example.fireapp.Objects;
 
-import android.util.Log;
+import com.example.fireapp.Objects.Hall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,8 @@ public class ShowTimes {
     private String hour;
     private String hallName;
     private Hall hall;
-    private List<List<Integer>> seatsHall;
+    private ArrayList<Integer> seatsHall;
+    //private List<List<Integer>> seatsHall;
 
 
     public ShowTimes(){}
@@ -23,18 +24,21 @@ public class ShowTimes {
         this.date = date;
         this.hour = hour;
         this.hallName = hall.getHallName();
+        this.hall=hall;
         int row = hall.getRow();
         int column = hall.getColumn();
 
+        seatsHall = new ArrayList<>();
+        for(int i =0 ; i<(row*column); i++)
+            seatsHall.add(i,0);
 
-        // seatsHall = new ArrayList[10][10];
-        seatsHall = new ArrayList<>(row);
-        for (int i=0; i<row; i++)
-            seatsHall.add(new ArrayList<>(column));
-
-        for (int i=0; i<row; i++)
-          for (int j=0; j<column; j++)
-            seatsHall.get(i).add(j,0);
+//        seatsHall = new ArrayList<>(row);
+//        for (int i=0; i<row; i++)
+//            seatsHall.add(new ArrayList<>(column));
+//
+//        for (int i=0; i<row; i++)
+//          for (int j=0; j<column; j++)
+//            seatsHall.get(i).add(j,0);
     }
 
     public String getStatusId() { return statusId; }
@@ -57,8 +61,12 @@ public class ShowTimes {
         return hall;
     }
 
-    public List<List<Integer>> getSeatsHall() {
+    public ArrayList<Integer> getSeatsHall() {
         return seatsHall;
     }
+
+//    public List<List<Integer>> getSeatsHall() {
+//        return seatsHall;
+//    }
 
 }

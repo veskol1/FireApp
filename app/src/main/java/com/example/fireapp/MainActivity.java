@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.example.fireapp.AdministrationActivities.AdminLoginActivity;
+import com.example.fireapp.Objects.Movie;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AdminLoginActivity.class);
             startActivity(intent);
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 }
