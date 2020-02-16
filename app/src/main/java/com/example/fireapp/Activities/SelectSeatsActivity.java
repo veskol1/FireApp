@@ -25,7 +25,7 @@ public class SelectSeatsActivity extends AppCompatActivity {
     private String showDateSelected;
     private String showHourSelected;
     private DatabaseReference mDatabase;
-    private ArrayList<Integer> actualSeatsHall;
+    private ArrayList<String> actualSeatsHall;
     private Hall actualHall;
     private RecyclerView seatsHallRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -52,15 +52,14 @@ public class SelectSeatsActivity extends AppCompatActivity {
                     String showDate = (String) ds.child("date").getValue();
                     String showHour = (String) ds.child("hour").getValue();
                     if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour)) {
-                        actualSeatsHall = (ArrayList<Integer>) ds.child("seatsHall").getValue();
+                        actualSeatsHall = (ArrayList<String>) ds.child("seatsHall").getValue();
                         actualHall = (Hall) ds.child("hall").getValue(Hall.class);
                     }
                 }
-
                 layoutManager = new GridLayoutManager(SelectSeatsActivity.this,actualHall.getColumn());
-                mAdapter = new SeatsAdapter(actualSeatsHall,actualHall);
-                seatsHallRecyclerView.setLayoutManager(layoutManager);
                 seatsHallRecyclerView.setHasFixedSize(true);
+                mAdapter = new SeatsAdapter(SelectSeatsActivity.this, actualSeatsHall, actualHall);
+                seatsHallRecyclerView.setLayoutManager(layoutManager);
                 seatsHallRecyclerView.setAdapter(mAdapter);
             }
 
