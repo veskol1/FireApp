@@ -29,7 +29,6 @@ public class SelectSeatsActivity extends AppCompatActivity {
     private Hall actualHall;
     private RecyclerView seatsHallRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    //private RecyclerView.Adapter mAdapter;
     private SeatsAdapter mAdapter;
 
     @Override
