@@ -12,7 +12,7 @@ public class ShowTimes {
     private String hour;
     private String hallName;
     private Hall hall;
-    private ArrayList<Integer> seatsHall;
+    private ArrayList<String> seatsHall;
     //private List<List<Integer>> seatsHall;
 
 
@@ -29,8 +29,8 @@ public class ShowTimes {
         int column = hall.getColumn();
 
         seatsHall = new ArrayList<>();
-        for(int i =0 ; i<(row*column); i++)
-            seatsHall.add(i,0);
+        for(int i = 0 ; i < (row*column); i++)
+            seatsHall.add(i,"0");
 
 //        seatsHall = new ArrayList<>(row);
 //        for (int i=0; i<row; i++)
@@ -61,7 +61,7 @@ public class ShowTimes {
         return hall;
     }
 
-    public ArrayList<Integer> getSeatsHall() {
+    public ArrayList<String> getSeatsHall() {
         return seatsHall;
     }
 

@@ -78,18 +78,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void addSearchBar(){
         searchText = findViewById(R.id.search_text);
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
+        TextWatcher mSearchTw  = new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 filter(s.toString());
             }
-        });
+        };
+        searchText.addTextChangedListener(mSearchTw);
 
     }
 
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater =getMenuInflater();
+        MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu,menu);
         return true;
     }
@@ -117,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AdminLoginActivity.class);
             startActivity(intent);
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 }
