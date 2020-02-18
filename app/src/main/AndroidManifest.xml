@@ -21,7 +21,7 @@
         <activity android:name=".AdministrationActivities.AdminLoginActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="Administration Login"></activity>
         <activity android:name=".AdministrationActivities.AdministrationActivity" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" android:label="Administration screen"></activity>
         <activity android:name=".AdministrationActivities.AddMovieActivity" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdministrationActivity" android:label="Add movie to database"></activity>
-        <activity android:name=".Activities.DetailedMovieActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="modie detailed"></activity>
+        <activity android:name=".Activities.DetailedMovieActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="Movie details"></activity>
         <activity android:name=".Activities.SelectSeatsActivity" android:launchMode="singleTop" android:parentActivityName=".Activities.DetailedMovieActivity" android:label="Select seats"></activity>
     </application>
 
