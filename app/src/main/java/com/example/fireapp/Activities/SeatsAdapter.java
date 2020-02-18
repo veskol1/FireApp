@@ -26,7 +26,6 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
     private DatabaseReference mDatabase;
     final private ListItemClickListener mOnClickListener;
     private Integer numberOfSelectedTickets = 0;
-    final private String SEAT_WAS_ALREADY_TAKEN = "1";
     final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
     final private String SEAT_EMPTY = "0";
 
@@ -65,24 +64,24 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
                    actualSeatsHall.set(position,SEAT_CANDIDATE_TO_BE_TAKEN);
                    numberOfSelectedTickets++;
 
-                   mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes/"+showTimeId);
-                   mDatabase.child("seatsHall").setValue(actualSeatsHall);
-                   mOnClickListener.onListItemClick(position, numberOfSelectedTickets);
+                   updateDb(position);
                }
                else if(actualSeatsHall.get(position).equals(SEAT_CANDIDATE_TO_BE_TAKEN)){
                    holder.imageView.setImageResource(R.drawable.seat_empty);
                    actualSeatsHall.set(position,SEAT_EMPTY);
                    numberOfSelectedTickets--;
 
-                   mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes/"+showTimeId);
-                   mDatabase.child("seatsHall").setValue(actualSeatsHall);
-                   mOnClickListener.onListItemClick(position,numberOfSelectedTickets);
+                   updateDb(position);
                }
-
+               mOnClickListener.onListItemClick(position,numberOfSelectedTickets);
            }
        });
     }
 
+    public void updateDb(int position){
+        mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes/"+showTimeId);
+        mDatabase.child("seatsHall").setValue(actualSeatsHall);
+    }
 
     @Override
     public int getItemCount() {
@@ -100,5 +99,8 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
 
     }
 
-
+    public void resetNumberOfSelectedTickets(){
+        numberOfSelectedTickets=0;
+        notifyDataSetChanged();
+    }
 }
