@@ -1,9 +1,6 @@
-package com.example.fireapp.Objects;
-
-import com.example.fireapp.Objects.Hall;
+package com.example.planetmovieapp.Objects;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ShowTimes {
     private String statusId;

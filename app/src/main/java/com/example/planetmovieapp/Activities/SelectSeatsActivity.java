@@ -1,4 +1,4 @@
-package com.example.fireapp.Activities;
+package com.example.planetmovieapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fireapp.Objects.Hall;
-import com.example.fireapp.R;
+import com.example.planetmovieapp.Objects.Hall;
+import com.example.planetmovieapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

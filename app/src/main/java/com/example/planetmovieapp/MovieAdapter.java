@@ -1,4 +1,4 @@
-package com.example.fireapp;
+package com.example.planetmovieapp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fireapp.Activities.DetailedMovieActivity;
-import com.example.fireapp.Objects.Movie;
+import com.example.planetmovieapp.Activities.DetailedMovieActivity;
+import com.example.planetmovieapp.Objects.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

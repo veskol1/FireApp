@@ -1,4 +1,4 @@
-package com.example.fireapp;
+package com.example.planetmovieapp;
 
 import org.junit.Test;
 

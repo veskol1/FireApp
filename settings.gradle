@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='FireApp'
+rootProject.name='Planet Movie App'

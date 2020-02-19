@@ -1,12 +1,12 @@
-package com.example.fireapp.Activities;
+package com.example.planetmovieapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.fireapp.Objects.Hall;
-import com.example.fireapp.R;
+import com.example.planetmovieapp.Objects.Hall;
+import com.example.planetmovieapp.R;
 import java.util.ArrayList;
 
 

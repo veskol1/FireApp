@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.example.fireapp"
+        applicationId "com.example.planetmovieapp"
         minSdkVersion 27
         targetSdkVersion 28
         versionCode 1

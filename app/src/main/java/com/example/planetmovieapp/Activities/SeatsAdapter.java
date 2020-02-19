@@ -1,18 +1,16 @@
-package com.example.fireapp.Activities;
+package com.example.planetmovieapp.Activities;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fireapp.Objects.Hall;
-import com.example.fireapp.R;
+import com.example.planetmovieapp.Objects.Hall;
+import com.example.planetmovieapp.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

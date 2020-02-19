@@ -1,4 +1,4 @@
-package com.example.fireapp;
+package com.example.planetmovieapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,8 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.example.fireapp.AdministrationActivities.AdminLoginActivity;
-import com.example.fireapp.Objects.Movie;
+import com.example.planetmovieapp.AdministrationActivities.AdminLoginActivity;
+import com.example.planetmovieapp.Objects.Movie;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
