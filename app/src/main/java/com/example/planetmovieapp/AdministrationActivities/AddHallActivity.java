@@ -1,12 +1,11 @@
-package com.example.fireapp.AdministrationActivities;
+package com.example.planetmovieapp.AdministrationActivities;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fireapp.R;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.planetmovieapp.R;
 
 public class AddHallActivity extends AppCompatActivity {
 

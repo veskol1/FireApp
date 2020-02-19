@@ -1,4 +1,4 @@
-package com.example.fireapp.AdministrationActivities;
+package com.example.planetmovieapp.AdministrationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fireapp.Objects.Hall;
-import com.example.fireapp.R;
+import com.example.planetmovieapp.Objects.Hall;
+import com.example.planetmovieapp.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

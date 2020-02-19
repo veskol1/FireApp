@@ -1,4 +1,4 @@
-package com.example.fireapp.Activities;
+package com.example.planetmovieapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.fireapp.Objects.Movie;
-import com.example.fireapp.R;
+import com.example.planetmovieapp.Objects.Movie;
+import com.example.planetmovieapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

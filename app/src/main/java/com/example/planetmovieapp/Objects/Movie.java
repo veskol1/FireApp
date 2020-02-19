@@ -1,4 +1,4 @@
-package com.example.fireapp.Objects;
+package com.example.planetmovieapp.Objects;
 
 import java.io.Serializable;
 

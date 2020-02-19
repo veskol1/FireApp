@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fireapp">
+    package="com.example.planetmovieapp">
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:launchMode="singleTop">
+        <activity android:name="com.example.planetmovieapp.MainActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,11 +18,12 @@
             </intent-filter>
         </activity>
 <!--        <activity android:name=".MainActivity" android:parentActivityName=".AdminLoginActivity" android:label="Welcome!"></activity>-->
-        <activity android:name=".AdministrationActivities.AdminLoginActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="Administration Login"></activity>
-        <activity android:name=".AdministrationActivities.AdministrationActivity" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" android:label="Administration screen"></activity>
-        <activity android:name=".AdministrationActivities.AddMovieActivity" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdministrationActivity" android:label="Add movie to database"></activity>
-        <activity android:name=".Activities.DetailedMovieActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="Movie details"></activity>
-        <activity android:name=".Activities.SelectSeatsActivity" android:launchMode="singleTop" android:parentActivityName=".Activities.DetailedMovieActivity" android:label="Select seats"></activity>
+        <activity android:name="com.example.planetmovieapp.AdministrationActivities.AdminLoginActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.MainActivity" android:label="Administration Login"></activity>
+        <activity android:name="com.example.planetmovieapp.AdministrationActivities.AdministrationActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.AdministrationActivities.AdminLoginActivity" android:label="Administration screen"></activity>
+        <activity android:name="com.example.planetmovieapp.AdministrationActivities.AddMovieActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.AdministrationActivities.AdministrationActivity" android:label="Add movie to database"></activity>
+        <activity android:name="com.example.planetmovieapp.Activities.DetailedMovieActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.MainActivity" android:label="Movie details"></activity>
+        <activity android:name="com.example.planetmovieapp.Activities.SelectSeatsActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.Activities.DetailedMovieActivity" android:label="Select seats"></activity>
+        <activity android:name="com.example.planetmovieapp.Activities.OrderDetailsActivity" android:parentActivityName="com.example.planetmovieapp.Activities.SelectSeatsActivity"></activity>
     </application>
 
 </manifest>
