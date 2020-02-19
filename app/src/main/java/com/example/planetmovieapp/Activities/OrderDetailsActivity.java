@@ -25,12 +25,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         listAllNewSelectedSeat= intent.getIntegerArrayListExtra("ListAllNewSelectedSeat");
         actualHall = (Hall)intent.getSerializableExtra("actualHall");
-        Integer numberOfSeats = actualHall.getColumn()*actualHall.getRow();
-        for(Integer a :listAllNewSelectedSeat)
-            textView.append("your seat is:"+a+"\n ");
+        Integer hallColumns = actualHall.getColumn();
+        for(Integer seat :listAllNewSelectedSeat) {
+            textView.append(
+                    "row:" + (((seat) / hallColumns) + 1) + "column:" + (((seat) % hallColumns) + 1) +"\n");
 
-        //      intent.putExtra("ListAllNewSelectedSeat",listAllNewSelectedSeat);
-        //        intent.putExtra("actualHall",actualHall);
+        }
+
 
     }
 

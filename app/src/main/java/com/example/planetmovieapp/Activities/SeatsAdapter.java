@@ -58,7 +58,7 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
            @Override
            public void onClick(View v) {
                if(actualSeatsHall.get(position).equals(SEAT_EMPTY)) {
-                   holder.imageView.setImageResource(R.drawable.seat_taken);
+                   holder.imageView.setImageResource(R.drawable.seat_candidate);
                    actualSeatsHall.set(position,SEAT_CANDIDATE_TO_BE_TAKEN);
                    numberOfSelectedTickets++;
 
