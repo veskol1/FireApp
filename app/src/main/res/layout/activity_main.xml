@@ -20,6 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_search_black_18dp"
+        app:endIconContentDescription="custom_content_desc"
         android:hint="Search..">
 
         <com.google.android.material.textfield.TextInputEditText
