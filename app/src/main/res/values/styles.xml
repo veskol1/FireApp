@@ -7,6 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextColor">@color/material_on_primary_emphasis_high_type</item>
+        <item name="android:colorBackground">@color/colorGrey2</item>
     </style>
+
+
 
 </resources>
