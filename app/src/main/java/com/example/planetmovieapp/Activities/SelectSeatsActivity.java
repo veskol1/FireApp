@@ -106,10 +106,10 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             @Override
             public void onClick(View v) {
                 if(numberOfTickets != 0) {//user is choose seat, seat is confirmed on database
-                    Toast.makeText(SelectSeatsActivity.this, "You have been purchased " + numberOfTickets + " tickets", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(SelectSeatsActivity.this, "You have been purchased " + numberOfTickets + " tickets", Toast.LENGTH_SHORT).show();
                     addCandidateSeat();
-                    updateDatabase();
                     startNewActivity();
+                    mAdapter.resetNumberOfSelectedTickets();  // or this updateDatabase();
                 }
                     else
                     Toast.makeText(SelectSeatsActivity.this,"Please select seat first",Toast.LENGTH_SHORT).show();
