@@ -11,8 +11,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,12 +29,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static java.security.AccessController.getContext;
-
-public class DetailedMovieActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class DetailedMovieActivity extends AppCompatActivity  {
     private TextView movieNameTextView;
     private TextView movieGenreTextView;
-    private TextView movieRatingTextView;
     private TextView movieSummaryTextView;
     private Button nextButton;
     private ImageView posterImageVIew;
@@ -45,13 +43,11 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
     private DatabaseReference mDatabase;
     private ArrayList<String> filteredDatesArray;
     private ArrayList<String> filteredHoursArray;
-    private Spinner spinnerDates;
-    private Spinner spinnerHours;
     private final String YOUTUBE_THUMBNAIL_BASE_LINK = "https://img.youtube.com/vi/";
     private final String YOUTUBE_THUMBNAIL_END_LINK = "/mqdefault.jpg";
     private final String YOUTUBE_TRAILER_BASE_LINK = "https://www.youtube.com/watch?v=";
-    private AutoCompleteTextView editTextFilledExposedDropdown;
-    private AutoCompleteTextView editTextFilledExposedDropdown2;
+    private AutoCompleteTextView dateDropdown;
+    private AutoCompleteTextView hourDropdown;
 
 
     @Override
@@ -60,24 +56,25 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
         setContentView(R.layout.activity_detailed_movie);
         movieNameTextView = findViewById (R.id.movie_name_text);
         nextButton = findViewById(R.id.btn_next);
-        spinnerDates = findViewById(R.id.spinner_date);
-        spinnerHours = findViewById(R.id.spinner_hour);
         posterImageVIew = findViewById(R.id.image_view_poster);
         trailerImageView = findViewById(R.id.image_view_trailer);
         movieGenreTextView = findViewById(R.id.movie_genre_text);
-        movieRatingTextView = findViewById(R.id.movie_rating_text);
         movieSummaryTextView = findViewById(R.id.movie_summary_text);
         movieRatingBar = findViewById(R.id.movie_ratingBar);
-
-        editTextFilledExposedDropdown = findViewById(R.id.filled_exposed_dropdown);
-        editTextFilledExposedDropdown2 = findViewById(R.id.filled_exposed_dropdown2);
-
+        dateDropdown = findViewById(R.id.date_dropdown);
+        hourDropdown = findViewById(R.id.hour_dropdown);
         filteredDatesArray = new ArrayList<>();
         filteredHoursArray = new ArrayList<>();
 
         Intent intent = getIntent();
         selectedMovie = (Movie) intent.getSerializableExtra("selected.movie");
 
+        inflateUserInterface();
+        loadShowDateFromDb();
+
+    }
+
+    public void inflateUserInterface(){
         Picasso.get().
                 load(selectedMovie.getPosterLink())
                 .into(posterImageVIew);
@@ -88,8 +85,8 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
         movieRatingBar.setRating(movieRating);
         movieSummaryTextView.setText(selectedMovie.getSummary());
 
-        String LinkToTumbnail = YOUTUBE_THUMBNAIL_BASE_LINK+selectedMovie.getTrailerLink()+YOUTUBE_THUMBNAIL_END_LINK;
-        Picasso.get().load(LinkToTumbnail)
+        String LinkToThumbnail = YOUTUBE_THUMBNAIL_BASE_LINK+selectedMovie.getTrailerLink()+YOUTUBE_THUMBNAIL_END_LINK;
+        Picasso.get().load(LinkToThumbnail)
                 .into(trailerImageView);
 
         trailerImageView.setOnClickListener(new View.OnClickListener() {
@@ -98,23 +95,27 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_TRAILER_BASE_LINK+selectedMovie.getTrailerLink())));
             }
         });
-        retrieveData();
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailedMovieActivity.this,SelectSeatsActivity.class);
-                intent.putExtra("movieId.to.seats",selectedMovie.getMovieId());
-                intent.putExtra("selectedDate.to.seats",selectedShowDate);
-                intent.putExtra("selectedHour.to.seats",selectedShowHour);
-                startActivity(intent);
+                if(!(selectedShowDate == null) &&!(selectedShowHour == null)) {
+                    Intent intent = new Intent(DetailedMovieActivity.this, SelectSeatsActivity.class);
+                    intent.putExtra("movieId.to.seats", selectedMovie.getMovieId());
+                    intent.putExtra("selectedDate.to.seats", selectedShowDate);
+                    intent.putExtra("selectedHour.to.seats", selectedShowHour);
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(DetailedMovieActivity.this,"Please select date and hour",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    public void retrieveData(){
 
+    /*this function loads show data dates for the selected movie and updates the date data dropdown */
+    public void loadShowDateFromDb(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         Query query = mDatabase.orderByChild("movieId").equalTo(selectedMovie.getMovieId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,9 +123,7 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                     filteredDatesArray.add(ds.child("date").getValue(String.class));
-
-                //updateSpinnerDates();
-                updateSpinnerDates1();
+                inflateDatesDropdown();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -133,52 +132,22 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
     }
 
 
-    public void updateSpinnerDates1() {
-
+    public void inflateDatesDropdown() {
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.dropdown_menu_popup_item, filteredDatesArray);
-        editTextFilledExposedDropdown.setAdapter(adapter);
+        dateDropdown.setAdapter(adapter);
 
-        editTextFilledExposedDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dateDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        selectedShowDate = (String)parent.getItemAtPosition(position);
-                        retrieveShowHour(selectedShowDate);
+                selectedShowDate = (String)parent.getItemAtPosition(position);
+                loadShowHoursFromDb(selectedShowDate);
             }
         });
-
     }
 
 
-
-    public void updateSpinnerDates(){
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, filteredDatesArray);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDates.setAdapter(arrayAdapter);
-        spinnerDates.setOnItemSelectedListener(this);
-    }
-
-
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()) {
-            case R.id.spinner_date: {
-                selectedShowDate = (String)parent.getItemAtPosition(position);
-                retrieveShowHour(selectedShowDate);
-                break;
-            }
-            case R.id.spinner_hour:{
-                selectedShowHour = (String)parent.getItemAtPosition(position);
-                break;
-            }
-        }
-    }
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
-
-
-    public void retrieveShowHour(String date){
+    /*this function loads show data hours for the selected movie and date and finally updates the date data dropdown */
+    public void loadShowHoursFromDb(String date){
         filteredHoursArray.clear();
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         Query query = mDatabase.orderByChild("movieId").equalTo(selectedMovie.getMovieId());
@@ -191,8 +160,7 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
                         filteredHoursArray.add(ds.child("hour").getValue(String.class));
                     }
                 }
-                //updateSpinnerHours();
-                updateSpinnerHours1();
+                inflateHoursDropdown();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -200,26 +168,17 @@ public class DetailedMovieActivity extends AppCompatActivity implements AdapterV
         });
     }
 
-    public void updateSpinnerHours(){
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, filteredHoursArray);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerHours.setAdapter(arrayAdapter);
-        spinnerHours.setOnItemSelectedListener(this);
-    }
 
-    public void updateSpinnerHours1(){
+    public void inflateHoursDropdown(){
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.dropdown_menu_popup_item, filteredHoursArray);
-        editTextFilledExposedDropdown2.setAdapter(adapter);
+        hourDropdown.setAdapter(adapter);
 
-        editTextFilledExposedDropdown2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        hourDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedShowHour = (String)parent.getItemAtPosition(position);
             }
         });
-
     }
-
-
 
 }

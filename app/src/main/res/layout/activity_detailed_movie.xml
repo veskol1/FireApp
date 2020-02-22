@@ -71,17 +71,19 @@
                 />
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="160dp"
+                android:layout_width="150dp"
                 android:layout_height="90dp"
                 app:cardCornerRadius="2dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="1dp" >
 
                 <ImageView
                     android:id="@+id/image_view_trailer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    />
+                    android:scaleType="centerCrop" />
+
             </com.google.android.material.card.MaterialCardView>
 
 
@@ -90,14 +92,17 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="4dp">
+            app:cardCornerRadius="4dp"
+            app:strokeColor="@color/colorAccent"
+            app:strokeWidth="1dp">
 
             <ImageView
                 android:id="@+id/image_view_poster"
                 android:layout_width="180dp"
                 android:layout_height="260dp"
                 android:layout_gravity="end"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+/>
 
 
         </com.google.android.material.card.MaterialCardView>
@@ -139,52 +144,37 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_hour"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"/>
+            android:hint="Select Date">
 
+            <AutoCompleteTextView
+                android:id="@+id/date_dropdown"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:hint="Select Hour">
+
+            <AutoCompleteTextView
+                android:id="@+id/hour_dropdown"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
-
-
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:hint="Select Date">
-
-        <AutoCompleteTextView
-            android:id="@+id/filled_exposed_dropdown"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:textSize="10dp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:hint="Select Dated">
-
-        <AutoCompleteTextView
-            android:id="@+id/filled_exposed_dropdown2"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:textSize="10dp"
-            />
-
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.button.MaterialButton
@@ -192,7 +182,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="next"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
         android:layout_gravity="end" />
 
     </LinearLayout>
