@@ -14,7 +14,6 @@ import com.example.planetmovieapp.R;
 
 public class AdminLoginActivity extends AppCompatActivity {
     private EditText usernameLogEditText,passwordLogEditText;
-    private TextView regTextView;
     private Button logButton;
 
     @Override
@@ -25,7 +24,6 @@ public class AdminLoginActivity extends AppCompatActivity {
         usernameLogEditText = findViewById(R.id.admin_log_edit);
         passwordLogEditText = findViewById(R.id.admin_password_log_edit);
         logButton = findViewById(R.id.admin_log_button);
-        regTextView = findViewById(R.id.tv_register);
 
 
         logButton.setOnClickListener(new View.OnClickListener() {

@@ -10,20 +10,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.planetmovieapp.Activities.LoginActivity" android:launchMode="singleTop">
+        <activity android:name="com.example.planetmovieapp.LoginActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:parentActivityName=".Activities.LoginActivity" android:label="Welcome!"></activity>
+        <activity android:name=".MainActivity" android:parentActivityName=".LoginActivity" android:label="Welcome to MoviePlanet!"></activity>
         <activity android:name="com.example.planetmovieapp.AdministrationActivities.AdminLoginActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.MainActivity" android:label="Administration Login"></activity>
         <activity android:name="com.example.planetmovieapp.AdministrationActivities.AdministrationActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.AdministrationActivities.AdminLoginActivity" android:label="Administration screen"></activity>
         <activity android:name="com.example.planetmovieapp.AdministrationActivities.AddMovieActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.AdministrationActivities.AdministrationActivity" android:label="Add movie to database"></activity>
         <activity android:name="com.example.planetmovieapp.Activities.DetailedMovieActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.MainActivity" android:label="Movie details"></activity>
         <activity android:name="com.example.planetmovieapp.Activities.SelectSeatsActivity" android:launchMode="singleTop" android:parentActivityName="com.example.planetmovieapp.Activities.DetailedMovieActivity" android:label="Select seats"></activity>
         <activity android:name="com.example.planetmovieapp.Activities.OrderDetailsActivity" android:parentActivityName="com.example.planetmovieapp.Activities.SelectSeatsActivity"></activity>
+        <activity android:name=".RegisterActivity" android:label="Register account" android:parentActivityName="com.example.planetmovieapp.LoginActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
-package com.example.planetmovieapp.AdministrationActivities;
+package com.example.planetmovieapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.planetmovieapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
-    private static final String TAG = "EmailPassword";
     private EditText usernameEditText,passwordEditText;
     private Button regButton;
     private FirebaseAuth mAuth;
@@ -44,39 +43,32 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        }
-                        else{
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-//                DatabaseReference postsRef = ref.child("Users");
-//                DatabaseReference newPostRef = postsRef.push();
-//
-//                newPostRef.child("username").setValue(username);
-//                newPostRef.child("password").setValue(password);
-
-               // myRef.child("users").child(username).setValue(password);
-               // myRef.child("Login").child(username).setValue(username);
-               // myRef.child("Login").child(password).setValue(password);
-              //  Toast.makeText(getApplicationContext(),"The user was registered to the database",Toast.LENGTH_LONG).show();
-
-               // Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
-               // startActivity(intent);
+                if(email.isEmpty() || password.isEmpty() )
+                    Toast.makeText(RegisterActivity.this,"Please enter Email and Password",Toast.LENGTH_SHORT).show();
+                else
+                    registerACount(email,password);
             }
         });
-
     }
 
+
+    public void registerACount(String email, String password){
+        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    if (password.length()<6)
+                        Toast.makeText(RegisterActivity.this, "Please enter at least 6 chars Password", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(RegisterActivity.this, "Please enter valid Email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 
 }
