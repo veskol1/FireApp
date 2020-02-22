@@ -62,17 +62,21 @@
 
         </RelativeLayout>
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
+            <Button
+                android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_register"
+                android:text="Don't have account? Register here"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="16dp"
-                android:text="Don't have acount? Register here"/>
+                android:textSize="12sp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                />
+
         </RelativeLayout>
 
     </LinearLayout>
