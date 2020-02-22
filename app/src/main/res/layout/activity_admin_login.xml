@@ -22,7 +22,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/username_log_edit"
+            android:id="@+id/admin_log_edit"
             android:inputType="text"
             android:text="Admin"
             android:maxLines="1" />
@@ -40,7 +40,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/password_log_edit"
+            android:id="@+id/admin_password_log_edit"
             android:text="1234"
             android:inputType="textPassword"/>
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/log_button"
+                android:id="@+id/admin_log_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

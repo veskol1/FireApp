@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "933262237630",
-    "firebase_url": "https://fireapp-35cd0.firebaseio.com",
-    "project_id": "fireapp-35cd0",
-    "storage_bucket": "fireapp-35cd0.appspot.com"
+    "project_number": "758522675499",
+    "firebase_url": "https://movieplanet-ef66e.firebaseio.com",
+    "project_id": "movieplanet-ef66e",
+    "storage_bucket": "movieplanet-ef66e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:933262237630:android:72fa842296e0b4724223ef",
+        "mobilesdk_app_id": "1:758522675499:android:a7b3e8af0b3499442b056e",
         "android_client_info": {
           "package_name": "com.example.planetmovieapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "933262237630-ualoadg2qt13772dhqq0jdbe0gos2e5c.apps.googleusercontent.com",
+          "client_id": "758522675499-l5edio2j62h5okrogve8vulosboaqv4a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDRSPG-ZVE7rnW3fauqTrNx599Gc2lOBwg"
+          "current_key": "AIzaSyApS75W7vm6bagMu_1ay6J8Tiocr0xAdT4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "933262237630-ualoadg2qt13772dhqq0jdbe0gos2e5c.apps.googleusercontent.com",
+              "client_id": "758522675499-l5edio2j62h5okrogve8vulosboaqv4a.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
