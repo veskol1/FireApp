@@ -22,9 +22,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user_log_edit"
+            android:id="@+id/admin_log_edit"
             android:inputType="text"
-            android:text="veska@gmail.com"
+            android:text="Admin"
             android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -40,8 +40,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user_password_log_edit"
-            android:text="123456"
+            android:id="@+id/admin_password_log_edit"
+            android:text="1234"
             android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/user_log_button"
+                android:id="@+id/admin_log_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -60,19 +60,6 @@
                 android:layout_marginTop="16dp"
                 android:text="Login" />
 
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_register"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="16dp"
-                android:text="Don't have acount? Register here"/>
         </RelativeLayout>
 
     </LinearLayout>

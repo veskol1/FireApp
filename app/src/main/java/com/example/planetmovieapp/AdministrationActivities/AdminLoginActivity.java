@@ -20,11 +20,11 @@ public class AdminLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_admin_login);
 
-        usernameLogEditText = findViewById(R.id.username_log_edit);
-        passwordLogEditText = findViewById(R.id.password_log_edit);
-        logButton = findViewById(R.id.log_button);
+        usernameLogEditText = findViewById(R.id.admin_log_edit);
+        passwordLogEditText = findViewById(R.id.admin_password_log_edit);
+        logButton = findViewById(R.id.admin_log_button);
         regTextView = findViewById(R.id.tv_register);
 
 

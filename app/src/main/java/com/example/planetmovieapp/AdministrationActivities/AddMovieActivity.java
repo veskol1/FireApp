@@ -96,7 +96,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         /*get inserted info from Edit Texts */
         String movieName = movieNameEditText.getText().toString();
         String movieGenre = movieGenreEditText.getText().toString();
-        String movieRating = movieRatingEditText.getText().toString();
+        Integer movieRating = Integer.parseInt(movieRatingEditText.getText().toString());
         String movieSummary = movieSummaryEditText.getText().toString();
         String movieTrailer = movieTrailerEditText.getText().toString();
         String moviePoster = moviePosterEditText.getText().toString();
