@@ -28,7 +28,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Integer hallColumns = actualHall.getColumn();
         for(Integer seat :listAllNewSelectedSeat) {
             textView.append(
-                    "row:" + (((seat) / hallColumns) + 1) + "column:" + (((seat) % hallColumns) + 1) +"\n");
+                    "Your order has confirmed!\n\n" + "Number of tickets: " + (listAllNewSelectedSeat.size()) + "\n\n" +
+                            "Row: " + (((seat) / hallColumns) + 1) + ", " + "Column: " + (((seat) % hallColumns) + 1) + "\n");
 
         }
 
