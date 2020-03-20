@@ -1,5 +1,4 @@
 package com.example.planetmovieapp.AdministrationActivities;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,11 +7,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.planetmovieapp.Objects.Hall;
 import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.R;
@@ -25,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 public class AddMovieActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -40,12 +36,10 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
     private Hall selectedHallObj; //holds the selected spinner Object of Hall
     private boolean updateIsLegal = true; //approves if on the same date & hour & hall , the movie can be added to DB
     private ArrayList<Hall> hallsArrayList; //holds the halls that are already in DB
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_movie);
-
         movieNameEditText = findViewById(R.id.et_movie_name);
         movieGenreEditText = findViewById(R.id.et_movie_genre);
         movieSummaryEditText = findViewById(R.id.editTextMovieSummary);
@@ -71,14 +65,13 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(View v) {
                 Integer movieRating = Integer.parseInt(movieRatingEditText.getText().toString());
-                if(movieRating>=1 && movieRating<10)  //movie rating should be between 1-10
+                if( movieRating>=1 && movieRating<10)  //movie rating should be between 1-10
                     getDataFromDb();
                 else
                     movieRatingInput.setError(ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN);
             }
         });
     }
-
     public void getDataFromDb(){
         mDatabase= FirebaseDatabase.getInstance().getReference("ShowTimes");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -96,18 +89,15 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                     else
                         updateIsLegal = true;
                 }
-
                 if (updateIsLegal)
                     AddMovieToDb();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(AddMovieActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     public void AddMovieToDb(){
         /*get inserted info from Edit Texts */
         String movieName = movieNameEditText.getText().toString();
@@ -116,22 +106,16 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         String movieSummary = movieSummaryEditText.getText().toString();
         String movieTrailer = movieTrailerEditText.getText().toString();
         String moviePoster = moviePosterEditText.getText().toString();
-
         mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
         String generatedMovieId = mDatabase.push().getKey();
         Movie movie = new Movie(generatedMovieId, movieName, movieGenre, movieRating, movieSummary, movieTrailer, moviePoster);
         mDatabase.child(generatedMovieId).setValue(movie);
-
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         String generatedShowId = mDatabase.push().getKey();
         ShowTimes showTimes = new ShowTimes(generatedShowId, generatedMovieId, daySelected, hourSelected, selectedHallObj);
         mDatabase.child(generatedShowId).setValue(showTimes);
-
         Toast.makeText(AddMovieActivity.this, "Movie was successfully added to Database", Toast.LENGTH_SHORT).show();
-
     }
-
-
     public void updateSpinners(){
         Intent intent = getIntent(); //load the halls from database on the parent Activity so it can displayed on the spinner
         hallsArrayList = (ArrayList<Hall>)intent.getSerializableExtra(HALL_ARRAY);
@@ -139,23 +123,19 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         for(Hall hall : hallsArrayList){
             filterHallNamesList.add(hall.getHallName());
         }
-
         ArrayAdapter hallsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,filterHallNamesList);
         hallsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinHalls.setAdapter(hallsAdapter);
         spinHalls.setOnItemSelectedListener(this);
-
         ArrayAdapter<CharSequence> daysAdapter = ArrayAdapter.createFromResource(this,R.array.days_array,android.R.layout.simple_spinner_item);
         daysAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinDays.setAdapter(daysAdapter);
         spinDays.setOnItemSelectedListener(this);
-
         ArrayAdapter<CharSequence> hourAdapter = ArrayAdapter.createFromResource(this,R.array.hours_array,android.R.layout.simple_spinner_item);
         hourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinHours.setAdapter(hourAdapter);
         spinHours.setOnItemSelectedListener(this);
     }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()){
@@ -175,9 +155,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                 break;
         }
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }
