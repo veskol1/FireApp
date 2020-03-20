@@ -18,6 +18,8 @@ import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.R;
 import com.example.planetmovieapp.Objects.ShowTimes;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +30,9 @@ import java.util.ArrayList;
 
 public class AddMovieActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public final String HALL_ARRAY ="com.project.arraylist.halls";
+    public final String ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN ="Rating should between 1-10";
     private EditText movieNameEditText,movieGenreEditText,movieTrailerEditText,moviePosterEditText,movieSummaryEditText,movieRatingEditText;
+    private TextInputLayout movieRatingInput;
     private MaterialButton btnAddMovie;
     private DatabaseReference mDatabase;
     private Spinner spinHalls, spinDays, spinHours;
@@ -52,13 +56,25 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         spinDays = findViewById(R.id.spn_days);
         spinHours = findViewById(R.id.spn_hours);
         btnAddMovie = findViewById(R.id.add_movie_button);
+        movieRatingInput = findViewById(R.id.rating_input_text);
+
+        movieRatingEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                movieRatingInput.setError(null);
+            }
+        });
 
         updateSpinners();
 
         btnAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataFromDb();
+                Integer movieRating = Integer.parseInt(movieRatingEditText.getText().toString());
+                if(movieRating>=1 && movieRating<10)  //movie rating should be between 1-10
+                    getDataFromDb();
+                else
+                    movieRatingInput.setError(ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN);
             }
         });
     }
