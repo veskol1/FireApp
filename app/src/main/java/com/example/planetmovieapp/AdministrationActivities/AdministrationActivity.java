@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class AdministrationActivity extends AppCompatActivity{
     public final String HALL_ARRAY = "com.project.arraylist.halls";
-    private MaterialButton addMovieButton, addHallButton;
+    private MaterialButton addMovieButton, addHallButton, addShowTimeButton;
     private DatabaseReference mDatabase;
     private ArrayList<Hall> hallsArrayList = new ArrayList<>();
 
@@ -32,6 +32,7 @@ public class AdministrationActivity extends AppCompatActivity{
         setContentView(R.layout.activity_administration);
         addMovieButton = findViewById(R.id.add_movie_btn);
         addHallButton = findViewById(R.id.add_hall_btn);
+        addShowTimeButton = findViewById(R.id.add_showtime_btn);
 
         retrieveHallsFromDbToArray();
 
@@ -43,11 +44,23 @@ public class AdministrationActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+
+
+        addShowTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
+                startActivity(intent);
+            }
+        });
+
         addHallButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             }
         });
+
+
     }
 
     public void retrieveHallsFromDbToArray(){
@@ -68,14 +81,6 @@ public class AdministrationActivity extends AppCompatActivity{
         });
 
     }
-
-
-
-
-
-
-
-
 
 
 
