@@ -62,24 +62,25 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
                    actualSeatsHall.set(position,SEAT_CANDIDATE_TO_BE_TAKEN);
                    numberOfSelectedTickets++;
 
-                   updateDb(position);
+                   updateDb();
                }
                else if(actualSeatsHall.get(position).equals(SEAT_CANDIDATE_TO_BE_TAKEN)){
                    holder.imageView.setImageResource(R.drawable.seat_empty);
                    actualSeatsHall.set(position,SEAT_EMPTY);
                    numberOfSelectedTickets--;
 
-                   updateDb(position);
+                   updateDb();
                }
                mOnClickListener.onListItemClick(position,numberOfSelectedTickets);
            }
        });
     }
 
-    public void updateDb(int position){
+    public void updateDb(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes/"+showTimeId);
         mDatabase.child("seatsHall").setValue(actualSeatsHall);
     }
+
 
     @Override
     public int getItemCount() {
