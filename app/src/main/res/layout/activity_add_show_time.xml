@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Select Movie"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        app:errorEnabled="true">
 
         <AutoCompleteTextView
             android:id="@+id/movie_list_dropdown"
@@ -36,9 +38,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:id="@+id/hall_layout_input"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Select Hall"
+        app:errorEnabled="true"
         android:layout_marginTop="16dp">
 
         <AutoCompleteTextView
@@ -57,6 +61,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Select Date"
+        app:errorEnabled="true"
         android:layout_marginTop="16dp">
 
         <AutoCompleteTextView
@@ -75,6 +80,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Select Hour"
+        app:errorEnabled="true"
         android:layout_marginTop="16dp">
 
         <AutoCompleteTextView
