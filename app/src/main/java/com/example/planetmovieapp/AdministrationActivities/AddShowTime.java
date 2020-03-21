@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -32,11 +34,13 @@ public class AddShowTime extends AppCompatActivity {
     private AutoCompleteTextView hourDropdown;
     private DatabaseReference mDatabase;
     private ArrayList<String> movieNamesList = new ArrayList<>();
+    private ArrayList<Movie> movieList = new ArrayList<>();
     private ArrayList<String> hallNamesList = new ArrayList<>();
     private ArrayList<String> defaultHourList ;
     private String selectedMovie;
     private String selectedHall;
     private String selectedDate;
+    private Button confirmButton;
     private TextInputLayout hallInputLayout;
 
 
@@ -49,12 +53,22 @@ public class AddShowTime extends AppCompatActivity {
         dateDropdown = findViewById(R.id.date_list_dropdown);
         hourDropdown = findViewById(R.id.hour_list_dropdown);
         hallInputLayout = findViewById(R.id.hall_layout_input);
+        confirmButton = findViewById(R.id.btn_confirm);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
 
         getMovieListFromDb();
         getHallsListFromDb();
         updateDatesDropdown();
+
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AddShowTime.this,"added successfully",Toast.LENGTH_LONG).show();
+            }
+        });
+
 
     }
 
@@ -65,8 +79,10 @@ public class AddShowTime extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    movieList.add(ds.getValue(Movie.class));
                     movieNamesList.add(ds.child("movieName").getValue(String.class));
                 }
+
                 updateMoviesDropdown();
             }
 
@@ -185,12 +201,6 @@ public class AddShowTime extends AppCompatActivity {
 
 
 
-    /*Resets the hour for specific movie, hall and date selection*/
-    public void resetHoursList(){
-        defaultHourList = new ArrayList<>(Arrays.asList("16:00","18:00","20:00","22:00"));
-    }
-
-
     /*restores default value depending on num value */
     public void restoreDefaults(int num){
         switch (num) {
@@ -218,6 +228,10 @@ public class AddShowTime extends AppCompatActivity {
             }
         }
     }
+
+
+
+
 
 
 
