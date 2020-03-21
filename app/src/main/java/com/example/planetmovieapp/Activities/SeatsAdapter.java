@@ -37,6 +37,7 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
 
     public interface ListItemClickListener {
         void onListItemClick(int seatNumber,int numberOfSelectedTickets);
+        void updateTimerUI(ArrayList<String> actualSeatsHall);
     }
 
     @NonNull
@@ -72,6 +73,7 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
                    updateDb();
                }
                mOnClickListener.onListItemClick(position,numberOfSelectedTickets);
+               mOnClickListener.updateTimerUI(actualSeatsHall);
            }
        });
     }
@@ -100,6 +102,15 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
 
     public void resetNumberOfSelectedTickets(){
         numberOfSelectedTickets=0;
+        notifyDataSetChanged();
+    }
+
+    public void updateSeatsUI(ArrayList<String> actualSeatsHall){
+        if (actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN)){
+            for(int i = 0; i <actualSeatsHall.size(); i++)
+                if(actualSeatsHall.get(i).equals(SEAT_CANDIDATE_TO_BE_TAKEN))
+                    actualSeatsHall.set(i,SEAT_EMPTY);
+        }
         notifyDataSetChanged();
     }
 }
