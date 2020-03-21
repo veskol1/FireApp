@@ -106,14 +106,17 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         String movieSummary = movieSummaryEditText.getText().toString();
         String movieTrailer = movieTrailerEditText.getText().toString();
         String moviePoster = moviePosterEditText.getText().toString();
+
         mDatabase = FirebaseDatabase.getInstance().getReference("Movies");
         String generatedMovieId = mDatabase.push().getKey();
         Movie movie = new Movie(generatedMovieId, movieName, movieGenre, movieRating, movieSummary, movieTrailer, moviePoster);
         mDatabase.child(generatedMovieId).setValue(movie);
+
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         String generatedShowId = mDatabase.push().getKey();
         ShowTimes showTimes = new ShowTimes(generatedShowId, generatedMovieId, daySelected, hourSelected, selectedHallObj);
         mDatabase.child(generatedShowId).setValue(showTimes);
+
         Toast.makeText(AddMovieActivity.this, "Movie was successfully added to Database", Toast.LENGTH_SHORT).show();
     }
     public void updateSpinners(){
