@@ -26,9 +26,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
         listAllNewSelectedSeat= intent.getIntegerArrayListExtra("ListAllNewSelectedSeat");
         actualHall = (Hall)intent.getSerializableExtra("actualHall");
         Integer hallColumns = actualHall.getColumn();
+        textView.setText("Your order has confirmed!\n\n" + "Number of tickets: " +  "\n\n");
         for(Integer seat :listAllNewSelectedSeat) {
-            textView.append(
-                    "row:" + (((seat) / hallColumns) + 1) + "column:" + (((seat) % hallColumns) + 1) +"\n");
+            textView.append("Row: " + (((seat) / hallColumns) + 1) + ", " + "Column: " + (((seat) % hallColumns) + 1) + "\n");
+
 
         }
 

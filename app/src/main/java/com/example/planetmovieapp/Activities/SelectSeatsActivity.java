@@ -2,6 +2,7 @@ package com.example.planetmovieapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,6 +45,10 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     final private String SEAT_IS_TAKEN = "1";
     final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
+    boolean timerStatus = false; /*will hold the current status of the timerTextView */
+    private TextView timerTextView;
+    private CountDownTimer countDownTimer;
+    private long timeLeftMilliseconds = 200000; //10 mins
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         selectedTicketTextView = findViewById(R.id.tv_selected_tickets);
         progressBar = findViewById(R.id.seat_hall_progress_bar);
         seatHallScreen = findViewById(R.id.image_view_screen_hall);
+        timerTextView = findViewById(R.id.timer);
 
         Intent intent = getIntent();
         showMovieId = intent.getStringExtra("movieId.to.seats");
@@ -61,6 +67,41 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         showHourSelected = intent.getStringExtra("selectedHour.to.seats");
 
         getSeatsHallData();
+    }
+
+    public void updateTimer(){
+        int minutes = (int) timeLeftMilliseconds / 20000;
+        int seconds = (int) timeLeftMilliseconds % 20000 / 1000;
+
+        String timeLeftText;
+
+        timeLeftText = "" + minutes;
+        timeLeftText += ":";
+        if(seconds < 10) timeLeftText += "0";
+        timeLeftText += seconds;
+        timerTextView.setText(timeLeftText);
+    }
+
+    public void startTimer(){
+        timerStatus = true;
+        countDownTimer = new CountDownTimer(20000, 1000){
+            @Override
+            public void onTick(long l) {
+                timeLeftMilliseconds = l;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish() {
+                timerStatus = false;
+                timerTextView.setText("");
+                if(actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN))
+                    mAdapter.updateSeatsUI(actualSeatsHall);
+
+
+            }
+        }.start();
+
     }
 
     public void getSeatsHallData(){
@@ -99,13 +140,44 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
 
 
     @Override
-    public void onListItemClick(int seatNumber, int numberOfTickets) {
-        selectedTicketTextView.setText("Number of selected tickets:"+numberOfTickets);
+    public void updateTimerUI(ArrayList<String> actualSeatsHall) {
+        this.actualSeatsHall = actualSeatsHall;
+        if(timerStatus == false){  /*if timerTextView is not running now*/
+            if(actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN)) { /*start timerTextView*/
+                timerStatus = true;
+                startTimer();
+                }
+            else{ /*if there is not candidates*/
+                timerStatus = false;
+                countDownTimer.cancel();
+                timerTextView.setText("");
+            }
+        }
+        else{ /*if timerTextView is running*/
+            if(actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN)) {
+                //don't do anything , there is already one timerTextView running
+            }
+            else{
+                timerStatus = false;
+                countDownTimer.cancel();
+                timerTextView.setText("");
+            }
+        }
 
+
+    }
+
+    @Override
+    public void onListItemClick(int seatNumber, int numberOfTickets) {
+        selectedTicketTextView.setText("Number of selected tickets: " + numberOfTickets);
+//        if(!actualSeatsHall.get(seatNumber).equals(SEAT_IS_TAKEN)) {
+//            startTimer();
+//        }
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(numberOfTickets != 0) {//user is choose seat, seat is confirmed on database
+                if(numberOfTickets != 0) {//user has chose a seat, seat is confirmed on database
+                    //startTimer();
                     //Toast.makeText(SelectSeatsActivity.this, "You have been purchased " + numberOfTickets + " tickets", Toast.LENGTH_SHORT).show();
                     addCandidateSeat();
                     startNewActivity();
@@ -116,7 +188,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             }
         });
     }
-
 
 
     /*When user decides to go back and not purchase ticket*/

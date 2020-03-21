@@ -37,6 +37,7 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
 
     public interface ListItemClickListener {
         void onListItemClick(int seatNumber,int numberOfSelectedTickets);
+        void updateTimerUI(ArrayList<String> actualSeatsHall);
     }
 
     @NonNull
@@ -62,24 +63,26 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
                    actualSeatsHall.set(position,SEAT_CANDIDATE_TO_BE_TAKEN);
                    numberOfSelectedTickets++;
 
-                   updateDb(position);
+                   updateDb();
                }
                else if(actualSeatsHall.get(position).equals(SEAT_CANDIDATE_TO_BE_TAKEN)){
                    holder.imageView.setImageResource(R.drawable.seat_empty);
                    actualSeatsHall.set(position,SEAT_EMPTY);
                    numberOfSelectedTickets--;
 
-                   updateDb(position);
+                   updateDb();
                }
                mOnClickListener.onListItemClick(position,numberOfSelectedTickets);
+               mOnClickListener.updateTimerUI(actualSeatsHall);
            }
        });
     }
 
-    public void updateDb(int position){
+    public void updateDb(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes/"+showTimeId);
         mDatabase.child("seatsHall").setValue(actualSeatsHall);
     }
+
 
     @Override
     public int getItemCount() {
@@ -99,6 +102,15 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
 
     public void resetNumberOfSelectedTickets(){
         numberOfSelectedTickets=0;
+        notifyDataSetChanged();
+    }
+
+    public void updateSeatsUI(ArrayList<String> actualSeatsHall){
+        if (actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN)){
+            for(int i = 0; i <actualSeatsHall.size(); i++)
+                if(actualSeatsHall.get(i).equals(SEAT_CANDIDATE_TO_BE_TAKEN))
+                    actualSeatsHall.set(i,SEAT_EMPTY);
+        }
         notifyDataSetChanged();
     }
 }
