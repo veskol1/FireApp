@@ -121,8 +121,11 @@ public class DetailedMovieActivity extends AppCompatActivity  {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren())
-                    filteredDatesArray.add(ds.child("date").getValue(String.class));
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String date = ds.child("date").getValue(String.class);
+                    if(!filteredDatesArray.contains(date)) /*we want to remove duplicate dates*/
+                        filteredDatesArray.add(ds.child("date").getValue(String.class));
+                }
                 inflateDatesDropdown();
             }
             @Override
