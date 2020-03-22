@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class AddMovieActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public final String HALL_ARRAY ="com.project.arraylist.halls";
     public final String ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN ="Rating should between 1-10";
-    private EditText movieNameEditText,movieGenreEditText,movieTrailerEditText,moviePosterEditText,movieSummaryEditText,movieRatingEditText;
+    private EditText movieNameEditText, movieGenreEditText, movieTrailerEditText, moviePosterEditText, movieSummaryEditText, movieRatingEditText;
     private TextInputLayout movieRatingInput;
     private MaterialButton btnAddMovie;
     private DatabaseReference mDatabase;

@@ -2,6 +2,7 @@ package com.example.planetmovieapp.AdministrationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -20,51 +21,28 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AdministrationActivity extends AppCompatActivity{
+public class AdministrationActivity extends AppCompatActivity implements View.OnClickListener {
     public final String HALL_ARRAY = "com.project.arraylist.halls";
-    private MaterialButton addMovieButton, addHallButton, addShowTimeButton;
-    private DatabaseReference mDatabase;
     private ArrayList<Hall> hallsArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administration);
-        addMovieButton = findViewById(R.id.add_movie_btn);
-        addHallButton = findViewById(R.id.add_hall_btn);
-        addShowTimeButton = findViewById(R.id.add_showtime_btn);
+        MaterialButton addMovieButton = findViewById(R.id.add_movie_btn);
+        MaterialButton addHallButton = findViewById(R.id.add_hall_btn);
+        MaterialButton addShowTimeButton = findViewById(R.id.add_showtime_btn);
+        //MaterialButton statisticButton = findViewById(R.id.get_statistics_btn);
 
         retrieveHallsFromDbToArray();
 
-
-        addMovieButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(AdministrationActivity.this, AddMovieActivity.class);
-                intent.putExtra(HALL_ARRAY,hallsArrayList);
-                startActivity(intent);
-            }
-        });
-
-
-        addShowTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
-                startActivity(intent);
-            }
-        });
-
-        addHallButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
-
-
+        addMovieButton.setOnClickListener(this);
+        addHallButton.setOnClickListener(this);
+        addShowTimeButton.setOnClickListener(this);
     }
 
     public void retrieveHallsFromDbToArray(){
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         Query query = mDatabase.child("Halls");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,9 +57,29 @@ public class AdministrationActivity extends AppCompatActivity{
 
             }
         });
-
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.add_movie_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, AddMovieActivity.class);
+                intent.putExtra(HALL_ARRAY,hallsArrayList);
+                startActivity(intent);
+            }
+            case R.id.add_hall_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, AddHallActivity.class);
+                startActivity(intent);
+            }
+            case R.id.add_showtime_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
+                startActivity(intent);
+            }
+            case R.id.get_statistics_btn : {
+//                Intent intent = new Intent(AdministrationActivity.this, StatisticActivity.class);
+//                startActivity(intent);
+            }
 
-
+        }
+    }
 }
