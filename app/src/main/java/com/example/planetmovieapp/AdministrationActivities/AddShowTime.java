@@ -27,15 +27,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 /*This class is responsible on adding new show time for selected movie that is already in database*/
 public class AddShowTime extends AppCompatActivity {
-    private AutoCompleteTextView movieDropdown,hallDropdown,dateDropdown,hourDropdown;
-    private String selectedMovie,movieId,selectedHall,selectedDate,selectedHour;
+    private AutoCompleteTextView movieDropdown, hallDropdown, dateDropdown, hourDropdown;
+    private String selectedMovie, movieId, selectedHall, selectedDate, selectedHour;
     private DatabaseReference mDatabase;
     private ArrayList<String> movieNamesList = new ArrayList<>();
-    private ArrayList<Movie> movieList = new ArrayList<>();
     private ArrayList<String> hallNamesList = new ArrayList<>();
     private ArrayList<String> defaultHourList = new ArrayList<>(Arrays.asList("16:00","18:00","20:00","22:00")) ;
     private Hall HallObject = new Hall();
-    private Button confirmButton;
     private TextInputLayout hallInputLayout,hourInputLayout;
     final int ERASE_BOTTOM_THREE_FIELDS = 3;
     final int ERASE_BOTTOM_TWO_FIELDS = 2;
@@ -51,7 +49,7 @@ public class AddShowTime extends AppCompatActivity {
         hourDropdown = findViewById(R.id.hour_list_dropdown);
         hallInputLayout = findViewById(R.id.hall_layout_input);
         hourInputLayout = findViewById(R.id.hour_input_layout);
-        confirmButton = findViewById(R.id.confirm_add_button);
+        Button confirmButton = findViewById(R.id.confirm_add_button);
 
         getMovieListFromDb();
         getHallsListFromDb();
@@ -81,7 +79,6 @@ public class AddShowTime extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    movieList.add(ds.getValue(Movie.class));
                     movieNamesList.add(ds.child("movieName").getValue(String.class));
                 }
                 updateMoviesDropdown();

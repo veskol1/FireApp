@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,6 @@ import com.example.planetmovieapp.R;
 
 public class AdminLoginActivity extends AppCompatActivity {
     private EditText usernameLogEditText,passwordLogEditText;
-    private Button logButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class AdminLoginActivity extends AppCompatActivity {
 
         usernameLogEditText = findViewById(R.id.admin_log_edit);
         passwordLogEditText = findViewById(R.id.admin_password_log_edit);
-        logButton = findViewById(R.id.admin_log_button);
+        Button logButton = findViewById(R.id.admin_log_button);
 
 
         logButton.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +35,8 @@ public class AdminLoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(AdminLoginActivity.this, AdministrationActivity.class);
                     startActivity(intent);
                 }
+                else
+                    Toast.makeText(AdminLoginActivity.this,"Are you administrator?",Toast.LENGTH_LONG).show();
            }
          });
 
