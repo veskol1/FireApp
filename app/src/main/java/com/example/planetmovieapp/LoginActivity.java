@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
     private EditText usernameLogField,passwordField;
-    private Button logButton,registerButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,8 +33,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         usernameLogField = findViewById(R.id.user_log_edit);
         passwordField = findViewById(R.id.user_password_log_edit);
-        logButton = findViewById(R.id.user_log_button);
-        registerButton = findViewById(R.id.btn_register);
+        Button logButton = findViewById(R.id.user_log_button);
+        Button registerButton = findViewById(R.id.btn_register);
 
         mAuth = FirebaseAuth.getInstance();
 

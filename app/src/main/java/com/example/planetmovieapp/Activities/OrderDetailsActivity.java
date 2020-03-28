@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.planetmovieapp.MainActivity;
 import com.example.planetmovieapp.Objects.Hall;
 import com.example.planetmovieapp.R;
 import java.util.ArrayList;
@@ -14,6 +16,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView textView;
     private Hall actualHall;
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(OrderDetailsActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +42,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
 
         }
+
+
+
 
 
     }
