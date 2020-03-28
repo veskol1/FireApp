@@ -209,8 +209,10 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        countDownTimer.cancel();
-        mAdapter.updateSeatsUI(currentSeatsHallStatus);
+        if (timerStatus) {
+            countDownTimer.cancel();
+            mAdapter.updateSeatsUI(currentSeatsHallStatus);
+        }
     }
 
 
