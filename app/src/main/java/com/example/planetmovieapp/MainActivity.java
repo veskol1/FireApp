@@ -9,10 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.example.planetmovieapp.Objects.Movie;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,14 +36,29 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Movie> moviesList;
     private DatabaseReference mDataBase;
     private ProgressBar progressBar;
+    private TextView userTextView;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
+        userTextView = findViewById(R.id.user_text_view);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            String userMail = user.getEmail();
+            userMail = userMail.split("@")[0];
+            userTextView.append(userMail);
+        } else {
+            // No user is signed in
+            Log.d("kok","was not connected");
+        }
 
         addSearchBar();
         getMovieData();
