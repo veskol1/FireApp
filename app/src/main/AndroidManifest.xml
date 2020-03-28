@@ -10,14 +10,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:launchMode="singleTop">
+        <activity android:name=".LoginActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity android:name=".MainActivity" android:parentActivityName=".LoginActivity" android:label="Welcome to MoviePlanet!"/>-->
+        <activity android:name=".MainActivity" android:parentActivityName=".LoginActivity" android:label="Welcome to MoviePlanet!"/>
         <activity android:name=".AdministrationActivities.AdminLoginActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity" android:label="Administration Login"/>
         <activity android:name=".AdministrationActivities.AdministrationActivity" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" android:label="Administration screen"/>
         <activity android:name=".AdministrationActivities.AddMovieActivity" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdministrationActivity" android:label="Add movie to database"/>
