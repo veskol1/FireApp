@@ -1,47 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_marginTop="32dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-        <EditText
-            android:id="@+id/editTextHallName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:hint="Hall name" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextHallRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:hint="row Hall" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="Hall name"
+                app:endIconMode="clear_text">
 
-        <EditText
-            android:id="@+id/editTextHallColumn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:hint="column Hall" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButtonHall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:text=" Hall"
-            />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_hall_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Rows">
+
+                <AutoCompleteTextView
+                    android:id="@+id/row_dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:editable="false"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Columns">
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/column_dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:editable="false"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_hall_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Add Hall"
+                />
+        </LinearLayout>
+
+<!--    </androidx.cardview.widget.CardView>-->
 
 </LinearLayout>

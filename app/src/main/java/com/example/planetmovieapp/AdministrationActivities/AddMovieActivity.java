@@ -29,7 +29,6 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
     public final String ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN ="Rating should between 1-10";
     private EditText movieNameEditText, movieGenreEditText, movieTrailerEditText, moviePosterEditText, movieSummaryEditText, movieRatingEditText;
     private TextInputLayout movieRatingInput;
-    private MaterialButton btnAddMovie;
     private DatabaseReference mDatabase;
     private Spinner spinHalls, spinDays, spinHours;
     private String hallSelected, daySelected, hourSelected; // holds the selected hall/day/hour spinners strings
@@ -40,6 +39,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_movie);
+        MaterialButton btnAddMovie = findViewById(R.id.add_movie_button);
         movieNameEditText = findViewById(R.id.et_movie_name);
         movieGenreEditText = findViewById(R.id.et_movie_genre);
         movieSummaryEditText = findViewById(R.id.editTextMovieSummary);
@@ -49,7 +49,6 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         spinHalls = findViewById(R.id.spn_halls);
         spinDays = findViewById(R.id.spn_days);
         spinHours = findViewById(R.id.spn_hours);
-        btnAddMovie = findViewById(R.id.add_movie_button);
         movieRatingInput = findViewById(R.id.rating_input_text);
 
         movieRatingEditText.setOnClickListener(new View.OnClickListener() {
