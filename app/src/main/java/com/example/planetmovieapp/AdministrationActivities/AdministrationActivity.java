@@ -66,18 +66,22 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
                 Intent intent = new Intent(AdministrationActivity.this, AddMovieActivity.class);
                 intent.putExtra(HALL_ARRAY,hallsArrayList);
                 startActivity(intent);
+                break;
             }
             case R.id.add_hall_btn : {
                 Intent intent = new Intent(AdministrationActivity.this, AddHallActivity.class);
                 startActivity(intent);
+                break;
             }
             case R.id.add_showtime_btn : {
                 Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
                 startActivity(intent);
+                break;
             }
             case R.id.get_statistics_btn : {
 //                Intent intent = new Intent(AdministrationActivity.this, StatisticActivity.class);
 //                startActivity(intent);
+                break;
             }
 
         }

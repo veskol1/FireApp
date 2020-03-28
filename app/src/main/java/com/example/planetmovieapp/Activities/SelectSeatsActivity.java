@@ -3,6 +3,7 @@ package com.example.planetmovieapp.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,12 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapter.ListItemClickListener{
-    private String showMovieId;
-    private String showDateSelected;
-    private String showHourSelected;
-    private String showTimeId;
+    private String showMovieId, showDateSelected, showHourSelected, showTimeId;
     private DatabaseReference mDatabase;
-    private ArrayList<String> actualSeatsHall;
+    private ArrayList<String> currentSeatsHallStatus;
     private TextView selectedTicketTextView;
     private ImageView seatHallScreen;
     private Hall actualHall;
@@ -41,14 +39,14 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     private RecyclerView.LayoutManager layoutManager;
     private SeatsAdapter mAdapter;
     private ProgressBar progressBar;
-    final private String SEAT_EMPTY = "0";
-    final private String SEAT_IS_TAKEN = "1";
-    final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
     boolean timerStatus = false; /*will hold the current status of the timerTextView */
     private TextView timerTextView;
     private CountDownTimer countDownTimer;
     private long timeLeftMilliseconds = 200000; //10 mins
+    final private String SEAT_EMPTY = "0";
+    final private String SEAT_IS_TAKEN = "1";
+    final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,41 +67,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         getSeatsHallData();
     }
 
-    public void updateTimer(){
-        int minutes = (int) timeLeftMilliseconds / 20000;
-        int seconds = (int) timeLeftMilliseconds % 20000 / 1000;
-
-        String timeLeftText;
-
-        timeLeftText = "" + minutes;
-        timeLeftText += ":";
-        if(seconds < 10) timeLeftText += "0";
-        timeLeftText += seconds;
-        timerTextView.setText(timeLeftText);
-    }
-
-    public void startTimer(){
-        timerStatus = true;
-        countDownTimer = new CountDownTimer(20000, 1000){
-            @Override
-            public void onTick(long l) {
-                timeLeftMilliseconds = l;
-                updateTimer();
-            }
-
-            @Override
-            public void onFinish() {
-                timerStatus = false;
-                timerTextView.setText("");
-                if(actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN))
-                    mAdapter.updateSeatsUI(actualSeatsHall);
-
-
-            }
-        }.start();
-
-    }
-
     public void getSeatsHallData(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,7 +77,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                     String showDate = (String) ds.child("date").getValue();
                     String showHour = (String) ds.child("hour").getValue();
                     if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour)) {
-                        actualSeatsHall = (ArrayList<String>) ds.child("seatsHall").getValue();
+                        currentSeatsHallStatus = (ArrayList<String>) ds.child("seatsHall").getValue();
                         showTimeId = (String) ds.child("statusId").getValue(String.class);
                         actualHall = (Hall) ds.child("hall").getValue(Hall.class);
                     }
@@ -131,7 +94,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     public void UpdateSeatHallUI(){
         layoutManager = new GridLayoutManager(SelectSeatsActivity.this,actualHall.getColumn());
         seatsHallRecyclerView.setHasFixedSize(true);
-        mAdapter = new SeatsAdapter(SelectSeatsActivity.this, actualSeatsHall, actualHall,showTimeId);
+        mAdapter = new SeatsAdapter(this,SelectSeatsActivity.this, currentSeatsHallStatus, showTimeId);
         seatsHallRecyclerView.setLayoutManager(layoutManager);
         seatsHallRecyclerView.setAdapter(mAdapter);
         progressBar.setVisibility(View.GONE);
@@ -139,49 +102,69 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     }
 
 
-    @Override
-    public void updateTimerUI(ArrayList<String> actualSeatsHall) {
-        this.actualSeatsHall = actualSeatsHall;
-        if(timerStatus == false){  /*if timerTextView is not running now*/
-            if(actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN)) { /*start timerTextView*/
-                timerStatus = true;
-                startTimer();
-                }
-            else{ /*if there is not candidates*/
-                timerStatus = false;
-                countDownTimer.cancel();
-                timerTextView.setText("");
-            }
-        }
-        else{ /*if timerTextView is running*/
-            if(actualSeatsHall.contains(SEAT_CANDIDATE_TO_BE_TAKEN)) {
-                //don't do anything , there is already one timerTextView running
-            }
-            else{
-                timerStatus = false;
-                countDownTimer.cancel();
-                timerTextView.setText("");
-            }
-        }
+    public void updateTimer(){
+        int minutes = (int) timeLeftMilliseconds / 20000;
+        int seconds = (int) timeLeftMilliseconds % 20000 / 1000;
 
+        String timeLeftText;
+
+        timeLeftText = "" + minutes;
+        timeLeftText += ":";
+        if(seconds < 10) timeLeftText += "0";
+        timeLeftText += seconds;
+        timerTextView.setText(timeLeftText);
+    }
+
+    public void startTimer(){
+        timerStatus = true;
+        countDownTimer = new CountDownTimer(15000, 1000){
+            @Override
+            public void onTick(long l) {
+                timeLeftMilliseconds = l;
+                updateTimer();
+            }
+            @Override
+            public void onFinish() {
+                timerStatus = false;
+                timerTextView.setText("");
+                selectedTicketTextView.setText("Number of selected tickets: " + 0);
+                mAdapter.updateSeatsUI(currentSeatsHallStatus);  // erase all 'green' selected seats
+            }
+        }.start();
 
     }
 
+    /*Update timer status and UI on clicking while seats hall*/
+    public void updateTimerUI(ArrayList<String> currentSeatsHallStatus) {
+        this.currentSeatsHallStatus = currentSeatsHallStatus;
+        if(!timerStatus){  /*if timer is not running now*/
+            if(currentSeatsHallStatus.contains(SEAT_CANDIDATE_TO_BE_TAKEN)) {  // if seat was clicked and changed to green
+                timerStatus = true; // update timer status
+                startTimer();  // start timer
+                }
+        }
+        else {  /*if timer status is running*/
+            if(!currentSeatsHallStatus.contains(SEAT_CANDIDATE_TO_BE_TAKEN)) { // if user decides to remove all his selections (from green to white seats) there is not candidates
+                timerStatus = false;
+                countDownTimer.cancel();
+                timerTextView.setText("");
+            }
+        }
+    }
+
+    /*dsfsdf*/
     @Override
-    public void onListItemClick(int seatNumber, int numberOfTickets) {
-        selectedTicketTextView.setText("Number of selected tickets: " + numberOfTickets);
-//        if(!actualSeatsHall.get(seatNumber).equals(SEAT_IS_TAKEN)) {
-//            startTimer();
-//        }
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+    public void onListItemClick(ArrayList<Integer> seatsTakenByMe, ArrayList<String> currentSeatsHallStatus) {
+        updateTimerUI(currentSeatsHallStatus); //update timer
+        int numberOfSelectedTickets = seatsTakenByMe.size();
+        selectedTicketTextView.setText("Number of selected tickets: " + numberOfSelectedTickets);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() { //start new Activity
             @Override
             public void onClick(View v) {
-                if(numberOfTickets != 0) {//user has chose a seat, seat is confirmed on database
-                    //startTimer();
-                    //Toast.makeText(SelectSeatsActivity.this, "You have been purchased " + numberOfTickets + " tickets", Toast.LENGTH_SHORT).show();
-                    addCandidateSeat();
+                if(numberOfSelectedTickets != 0) {//user has choose a seat, seat is confirmed on database
+                    addCandidateSeatToSeatsHall(seatsTakenByMe);
                     startNewActivity();
-                    mAdapter.resetNumberOfSelectedTickets();  // or this updateDatabase();
                 }
                     else
                     Toast.makeText(SelectSeatsActivity.this,"Please select seat first",Toast.LENGTH_SHORT).show();
@@ -190,33 +173,20 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     }
 
 
-    /*When user decides to go back and not purchase ticket*/
-    @Override
-    protected void onStop() {
-        super.onStop();
-        removeCandidateSeat();
+    /*Adds selected seats to the currentSeatsHallStatus and updates the DB*/
+    public void addCandidateSeatToSeatsHall(ArrayList<Integer> seatsTakenByMe){  /*switches from '2' to '1' */
+        for(int i = 0; i < currentSeatsHallStatus.size(); i++)
+            if(currentSeatsHallStatus.get(i).equals(SEAT_CANDIDATE_TO_BE_TAKEN) && seatsTakenByMe.contains(i)) {
+                currentSeatsHallStatus.set(i, SEAT_IS_TAKEN);
+                listAllNewSelectedSeat.add(i);
+            }
         updateDatabase();
     }
 
-
-    public void removeCandidateSeat(){  /*switches from '2' to '0'*/
-        for(int i=0; i < actualSeatsHall.size(); i++)
-            if(actualSeatsHall.get(i).equals(SEAT_CANDIDATE_TO_BE_TAKEN))
-                actualSeatsHall.set(i,SEAT_EMPTY);
-    }
-
-    public void addCandidateSeat(){  /*switches from '2' to '1' */
-        for(int i=0; i < actualSeatsHall.size(); i++)
-            if(actualSeatsHall.get(i).equals(SEAT_CANDIDATE_TO_BE_TAKEN)) {
-                actualSeatsHall.set(i, SEAT_IS_TAKEN);
-                listAllNewSelectedSeat.add(i);
-            }
-    }
-
+    /*Updates DB with the new currentSeatsHallStatus*/
     public void updateDatabase(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes/"+showTimeId);
-        mDatabase.child("seatsHall").setValue(actualSeatsHall);
-        mAdapter.resetNumberOfSelectedTickets();  //updateS UI Text View-> "number of selected tickets :0"
+        mDatabase.child("seatsHall").setValue(currentSeatsHallStatus);
     }
 
 
@@ -225,7 +195,23 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         intent.putExtra("ListAllNewSelectedSeat",listAllNewSelectedSeat);
         intent.putExtra("actualHall",actualHall);
         startActivity(intent);
-
-
     }
+
+
+//    /*Triggered when user decides to go back and not purchase ticket*/
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        countDownTimer.cancel();
+//    }
+
+    /*When user decides to go back and not purchase ticket*/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        countDownTimer.cancel();
+        mAdapter.updateSeatsUI(currentSeatsHallStatus);
+    }
+
+
 }
