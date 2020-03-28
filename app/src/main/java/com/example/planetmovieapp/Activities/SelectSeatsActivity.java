@@ -164,6 +164,8 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             public void onClick(View v) {
                 if(numberOfSelectedTickets != 0) {//user has choose a seat, seat is confirmed on database
                     addCandidateSeatToSeatsHall(seatsTakenByMe);
+                    timerStatus = false;
+                    countDownTimer.cancel();
                     startNewActivity();
                 }
                     else
@@ -212,6 +214,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         if (timerStatus) {
             countDownTimer.cancel();
             mAdapter.updateSeatsUI(currentSeatsHallStatus);
+            timerStatus = false;
         }
     }
 
