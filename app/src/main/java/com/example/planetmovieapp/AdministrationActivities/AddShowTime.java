@@ -17,6 +17,11 @@ import com.example.planetmovieapp.Objects.Hall;
 import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.Objects.ShowTimes;
 import com.example.planetmovieapp.R;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 /*This class is responsible on adding new show time for selected movie that is already in database*/
 public class AddShowTime extends AppCompatActivity {
-    private AutoCompleteTextView movieDropdown, hallDropdown, dateDropdown, hourDropdown;
+    private AutoCompleteTextView movieDropdown, hallDropdown, hourDropdown;
     private String selectedMovie, movieId, selectedHall, selectedDate, selectedHour;
     private DatabaseReference mDatabase;
     private ArrayList<String> movieNamesList = new ArrayList<>();
@@ -35,6 +40,7 @@ public class AddShowTime extends AppCompatActivity {
     private ArrayList<String> defaultHourList = new ArrayList<>(Arrays.asList("16:00","18:00","20:00","22:00")) ;
     private Hall HallObject = new Hall();
     private TextInputLayout hallInputLayout,hourInputLayout;
+    private TextInputEditText datePickerTextView;
     final int ERASE_BOTTOM_THREE_FIELDS = 3;
     final int ERASE_BOTTOM_TWO_FIELDS = 2;
     final int ERASE_BOTTOM_ONE_FIELDS = 1;
@@ -45,7 +51,7 @@ public class AddShowTime extends AppCompatActivity {
         setContentView(R.layout.activity_add_show_time);
         movieDropdown = findViewById(R.id.movie_list_dropdown);
         hallDropdown = findViewById(R.id.hall_list_dropdown);
-        dateDropdown = findViewById(R.id.date_list_dropdown);
+        datePickerTextView = findViewById(R.id.date_picker_text_view);
         hourDropdown = findViewById(R.id.hour_list_dropdown);
         hallInputLayout = findViewById(R.id.hall_layout_input);
         hourInputLayout = findViewById(R.id.hour_input_layout);
@@ -53,7 +59,7 @@ public class AddShowTime extends AppCompatActivity {
 
         getMovieListFromDb();
         getHallsListFromDb();
-        updateDatesDropdown();
+        initializeAndAddOnClickDatePicker();
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,20 +147,48 @@ public class AddShowTime extends AppCompatActivity {
     }
 
 
+    //this function is responsible on updating the Date textView after picking the date we want
+    public void initializeAndAddOnClickDatePicker(){
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("select date:");
+        CalendarConstraints.Builder calendarConstrains = new CalendarConstraints.Builder();
+        calendarConstrains.setValidator(DateValidatorPointForward.now());
+        builder.setCalendarConstraints(calendarConstrains.build());
+        final MaterialDatePicker materialDatePicker = builder.build();
 
-    public void updateDatesDropdown(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.dropdown_menu_popup_item, getResources().getStringArray(R.array.days_array));
-        dateDropdown.setAdapter(adapter);
 
-        dateDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //Opens dialog for picking Date
+        datePickerTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    materialDatePicker.show(getSupportFragmentManager(),"TIME_PICKER");
+                else
+                    restoreDefaults(ERASE_BOTTOM_ONE_FIELDS);
+            }
+        });
+
+        //Opens dialog for picking Date when dialog closed without picking date (solves bug)
+        datePickerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(),"TIME_PICKER2");
+                getHoursFromDB();
+            }
+        });
+
+        //updates the textView with the selected Date
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
                 restoreDefaults(ERASE_BOTTOM_ONE_FIELDS);
-                selectedDate = (String) parent.getItemAtPosition(position);
+                selectedDate = materialDatePicker.getHeaderText();
+                datePickerTextView.setText(selectedDate);
                 getHoursFromDB();
             }
         });
     }
+
 
 
     /*update movie dropdown with the movie names arrayList*/
@@ -208,7 +242,7 @@ public class AddShowTime extends AppCompatActivity {
                 hallInputLayout.setError(null); /*removes the error message*/
                 selectedHall = null;
 
-                dateDropdown.setText("", false); /*removes selection from Date dropdown */
+                datePickerTextView.setText("");
                 selectedDate = null;
 
                 hourDropdown.setText("", false); /*removes selection from Hour dropdown */
@@ -218,7 +252,7 @@ public class AddShowTime extends AppCompatActivity {
             }
 
             case 2:{  //when clicking hall dropdown
-                dateDropdown.setText("", false); /*removes selection from Date dropdown */
+                datePickerTextView.setText("");
                 selectedDate = null;
 
                 hourDropdown.setText("", false); /*removes selection from Hour dropdown */
