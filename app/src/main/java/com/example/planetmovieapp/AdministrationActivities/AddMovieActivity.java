@@ -61,7 +61,7 @@ public class AddMovieActivity extends AppCompatActivity  {
 
 
         initializeDropdowns();
-        addOnClickDatePicker();
+        initializeAndAddOnClickDatePicker();
         addOnDropDownItemClickListeners();
 
 
@@ -89,7 +89,7 @@ public class AddMovieActivity extends AppCompatActivity  {
     }
 
     //this function is responsible on updating the Date textView after picking the date we want
-    public void addOnClickDatePicker(){
+    public void initializeAndAddOnClickDatePicker(){
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("select date:");
         CalendarConstraints.Builder calendarConstrains = new CalendarConstraints.Builder();
@@ -97,13 +97,8 @@ public class AddMovieActivity extends AppCompatActivity  {
         builder.setCalendarConstraints(calendarConstrains.build());
         final MaterialDatePicker materialDatePicker = builder.build();
 
-        selectedDateInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                materialDatePicker.show(getSupportFragmentManager(),"sdfds");
-            }
-        });
 
+        //Opens dialog for picking Date
         selectedDateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -112,6 +107,16 @@ public class AddMovieActivity extends AppCompatActivity  {
             }
         });
 
+        //Opens dialog for picking Date when dialog closed without picking date (solves bug)
+        selectedDateInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(),"sdfds");
+            }
+        });
+
+
+        //updates the textView with the selected Date
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
