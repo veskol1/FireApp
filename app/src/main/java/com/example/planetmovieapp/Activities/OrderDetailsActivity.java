@@ -17,14 +17,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Hall actualHall;
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//        Intent intent = new Intent(OrderDetailsActivity.this, MainActivity.class);
-//        startActivity(intent);
-//    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +29,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         actualHall = (Hall)intent.getSerializableExtra("actualHall");
         Integer hallColumns = actualHall.getColumn();
         textView.setText("Your order has confirmed!\n\n" + "Number of tickets: " +  "\n\n");
-        for(Integer seat :listAllNewSelectedSeat) {
+        for(Integer seat :listAllNewSelectedSeat)
             textView.append("Row: " + (((seat) / hallColumns) + 1) + ", " + "Column: " + (((seat) % hallColumns) + 1) + "\n");
-
-
-        }
-
-
-
-
 
     }
 
