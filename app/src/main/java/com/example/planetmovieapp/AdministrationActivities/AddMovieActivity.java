@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,10 @@ import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.R;
 import com.example.planetmovieapp.Objects.ShowTimes;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -24,15 +28,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
-public class AddMovieActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AddMovieActivity extends AppCompatActivity  {
     public final String HALL_ARRAY ="com.project.arraylist.halls";
     public final String ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN ="Rating should between 1-10";
     private EditText movieNameEditText, movieGenreEditText, movieTrailerEditText, moviePosterEditText, movieSummaryEditText, movieRatingEditText;
     private TextInputLayout movieRatingInput;
+    private TextInputEditText selectedDateInput;
     private DatabaseReference mDatabase;
-    private Spinner spinHalls, spinDays, spinHours;
-    private String hallSelected, daySelected, hourSelected; // holds the selected hall/day/hour spinners strings
-    private Hall selectedHallObj; //holds the selected spinner Object of Hall
+    private AutoCompleteTextView hallsDropdown, hoursDropdown;
+    private String selectedHall, selectedDate, selectedHour; // holds the selected hall/date/hour dropDowns strings
+    private Hall selectedHallObj; //holds the selected dropdown Object of Hall
     private boolean updateIsLegal = true; //approves if on the same date & hour & hall , the movie can be added to DB
     private ArrayList<Hall> hallsArrayList; //holds the halls that are already in DB
     @Override
@@ -46,31 +51,119 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
         moviePosterEditText = findViewById(R.id.et_movie_poster_link);
         movieTrailerEditText = findViewById(R.id.et_movie_trailer_link);
         movieRatingEditText = findViewById(R.id.et_movie_rating);
-        spinHalls = findViewById(R.id.spn_halls);
-        spinDays = findViewById(R.id.spn_days);
-        spinHours = findViewById(R.id.spn_hours);
+        hallsDropdown = findViewById(R.id.spn_halls);
+        selectedDateInput = findViewById(R.id.date_select);
+        hoursDropdown = findViewById(R.id.spn_hours);
         movieRatingInput = findViewById(R.id.rating_input_text);
 
-        movieRatingEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                movieRatingInput.setError(null);
-            }
-        });
+        Intent intent = getIntent(); //load the halls from database on the parent Activity so it can displayed on the spinner
+        hallsArrayList = (ArrayList<Hall>)intent.getSerializableExtra(HALL_ARRAY);
 
-        updateSpinners();
+
+        initializeDropdowns();
+        addOnClickDatePicker();
+        addOnDropDownItemClickListeners();
+
 
         btnAddMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer movieRating = Integer.parseInt(movieRatingEditText.getText().toString());
-                if( movieRating>=1 && movieRating<10)  //movie rating should be between 1-10
-                    getDataFromDb();
-                else
-                    movieRatingInput.setError(ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN);
+                movieRatingEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        movieRatingInput.setError(null);
+                    }
+                });
+                try {
+                    Integer movieRating = Integer.parseInt(movieRatingEditText.getText().toString());
+                    if (movieRating >= 1 && movieRating < 10)  //movie rating should be between 1-10
+                        getDataFromDb();
+                    else
+                        movieRatingInput.setError(ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN);
+                }catch (Exception e){
+                    Toast.makeText(AddMovieActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+    }
+
+    //this function is responsible on updating the Date textView after picking the date we want
+    public void addOnClickDatePicker(){
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("select date:");
+        CalendarConstraints.Builder calendarConstrains = new CalendarConstraints.Builder();
+        calendarConstrains.setValidator(DateValidatorPointForward.now());
+        builder.setCalendarConstraints(calendarConstrains.build());
+        final MaterialDatePicker materialDatePicker = builder.build();
+
+        selectedDateInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(),"sdfds");
+            }
+        });
+
+        selectedDateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    materialDatePicker.show(getSupportFragmentManager(),"TIME_PICKER");
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                selectedDate = materialDatePicker.getHeaderText();
+                selectedDateInput.setText(selectedDate);
             }
         });
     }
+
+
+    public void initializeDropdowns(){
+        //get hall names from Hall objects list
+        ArrayList<String> hallNamesList = new ArrayList<>();
+        for(Hall hall : hallsArrayList){
+            hallNamesList.add(hall.getHallName());
+        }
+
+        //initialize hall dropdown list
+        ArrayAdapter hallsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,hallNamesList);
+        hallsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hallsDropdown.setAdapter(hallsAdapter);
+
+        //initialize hours dropdown list
+        ArrayAdapter<CharSequence> hourAdapter = ArrayAdapter.createFromResource(this,R.array.hours_array,android.R.layout.simple_spinner_item);
+        hourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hoursDropdown.setAdapter(hourAdapter);
+    }
+
+
+    //this function is responsible on the functionality when selecting hall/hour on drop down
+    public void addOnDropDownItemClickListeners(){
+        hallsDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedHall = (String) parent.getItemAtPosition(position);
+                for(Hall findHall : hallsArrayList)
+                    if(findHall.getHallName().equals(selectedHall)) {
+                        selectedHallObj = findHall;     //find the hall object from the arrayList
+                        break;
+                    }
+            }
+        });
+
+        hoursDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedHour = (String) parent.getItemAtPosition(position);
+            }
+        });
+    }
+
+    //this function checks if the selectd hall/date/hour is not taken
     public void getDataFromDb(){
         mDatabase= FirebaseDatabase.getInstance().getReference("ShowTimes");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -80,7 +173,7 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
                     String hall = ds.child("hallName").getValue(String.class);
                     String date = ds.child("date").getValue(String.class);
                     String hour = ds.child("hour").getValue(String.class);
-                    if(date.equals(daySelected) && hour.equals(hourSelected) && hall.equals(hallSelected)) {
+                    if(date.equals(selectedDate) && hour.equals(selectedHour) && hall.equals(selectedHall)) {
                         updateIsLegal = false;
                         Toast.makeText(AddMovieActivity.this, "Can't add movie to Database! \nPlease choose another date, hour, hall", Toast.LENGTH_SHORT).show();
                         break;
@@ -97,6 +190,9 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
             }
         });
     }
+
+
+    //adds all the filled data to the DB -> adds new Movie to DB and New Showtime
     public void AddMovieToDb(){
         /*get inserted info from Edit Texts */
         String movieName = movieNameEditText.getText().toString();
@@ -113,51 +209,13 @@ public class AddMovieActivity extends AppCompatActivity implements AdapterView.O
 
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         String generatedShowId = mDatabase.push().getKey();
-        ShowTimes showTimes = new ShowTimes(generatedShowId, generatedMovieId, daySelected, hourSelected, selectedHallObj);
+        ShowTimes showTimes = new ShowTimes(generatedShowId, generatedMovieId, selectedDate, selectedHour, selectedHallObj);
         mDatabase.child(generatedShowId).setValue(showTimes);
 
-        Toast.makeText(AddMovieActivity.this, "Movie was successfully added to Database", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AddMovieActivity.this, "New movie and showtime was successfully added to Database", Toast.LENGTH_SHORT).show();
     }
-    public void updateSpinners(){
-        Intent intent = getIntent(); //load the halls from database on the parent Activity so it can displayed on the spinner
-        hallsArrayList = (ArrayList<Hall>)intent.getSerializableExtra(HALL_ARRAY);
-        ArrayList<String> filterHallNamesList = new ArrayList<>();
-        for(Hall hall : hallsArrayList){
-            filterHallNamesList.add(hall.getHallName());
-        }
-        ArrayAdapter hallsAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,filterHallNamesList);
-        hallsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinHalls.setAdapter(hallsAdapter);
-        spinHalls.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> daysAdapter = ArrayAdapter.createFromResource(this,R.array.days_array,android.R.layout.simple_spinner_item);
-        daysAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinDays.setAdapter(daysAdapter);
-        spinDays.setOnItemSelectedListener(this);
-        ArrayAdapter<CharSequence> hourAdapter = ArrayAdapter.createFromResource(this,R.array.hours_array,android.R.layout.simple_spinner_item);
-        hourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinHours.setAdapter(hourAdapter);
-        spinHours.setOnItemSelectedListener(this);
-    }
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
-            case R.id.spn_halls:
-                hallSelected = (String) parent.getItemAtPosition(position); //get selected hall string name from spinner
-                for(Hall findHall : hallsArrayList)
-                    if(findHall.getHallName().equals(hallSelected)) {
-                        selectedHallObj = findHall;     //find the hall object from the arraylist
-                        break;
-                    }
-                break;
-            case R.id.spn_days:
-                daySelected = (String) parent.getItemAtPosition(position);
-                break;
-            case R.id.spn_hours:
-                hourSelected = (String) parent.getItemAtPosition(position);
-                break;
-        }
-    }
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+
+
+
+
 }
