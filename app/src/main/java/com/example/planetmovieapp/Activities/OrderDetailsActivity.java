@@ -17,13 +17,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Hall actualHall;
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        Intent intent = new Intent(OrderDetailsActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//        Intent intent = new Intent(OrderDetailsActivity.this, MainActivity.class);
+//        startActivity(intent);
+//    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

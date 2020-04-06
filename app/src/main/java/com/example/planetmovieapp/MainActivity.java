@@ -105,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(s.toString());
+                if (s!=null)
+                 filter(s.toString());
             }
         };
         searchText.addTextChangedListener(mSearchTw);
@@ -114,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void filter(String text){
         ArrayList<Movie> filteredList = new ArrayList<>();
-        for(Movie movie : moviesList){
-            if(movie.getMovieName().toLowerCase().contains(text.toLowerCase()))
-                filteredList.add(movie);
-        }
+//        for(Movie movie : moviesList){
+//            if(movie.getMovieName().toLowerCase().contains(text.toLowerCase()))
+//                filteredList.add(movie);
+//        }
         mAdapter.filterList(filteredList);
     }
 
