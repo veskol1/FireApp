@@ -200,13 +200,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     }
 
 
-//    /*Triggered when user decides to go back and not purchase ticket*/
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        countDownTimer.cancel();
-//    }
-
     /*When user decides to go back and not purchase ticket*/
     @Override
     protected void onDestroy() {

@@ -49,16 +49,9 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            String userMail = user.getEmail();
-            userMail = userMail.split("@")[0];
-            userTextView.append(userMail);
-        } else {
-            // No user is signed in
-            Log.d("kok","was not connected");
-        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();        // User is signed in
+        String userMail =  user.getEmail().split("@")[0];
+        userTextView.append(userMail);
 
         addSearchBar();
         getMovieData();
@@ -105,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(s.toString());
+                if (s!=null)
+                 filter(s.toString());
             }
         };
         searchText.addTextChangedListener(mSearchTw);

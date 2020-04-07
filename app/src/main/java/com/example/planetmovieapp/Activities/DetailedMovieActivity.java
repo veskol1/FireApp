@@ -66,8 +66,13 @@ public class DetailedMovieActivity extends AppCompatActivity  {
         filteredDatesArray = new ArrayList<>();
         filteredHoursArray = new ArrayList<>();
 
-        Intent intent = getIntent();
-        selectedMovie = (Movie) intent.getSerializableExtra("selected.movie");
+        try {
+            Intent intent = getIntent();
+            selectedMovie = (Movie) intent.getSerializableExtra("selected.movie");
+            Log.d("kok","koka!!"+selectedMovie);
+        }catch (Exception e){
+            Log.d("kokk","koka!!");
+        }
 
         inflateUserInterface();
         loadShowDateFromDb();

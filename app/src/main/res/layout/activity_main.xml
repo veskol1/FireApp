@@ -36,21 +36,24 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/search_back"
-        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/search_back"
-        android:layout_marginTop="-7dp"
         android:padding="8dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/search_back"
+        android:layout_gravity="center"
+        />
 
 
 </LinearLayout>
