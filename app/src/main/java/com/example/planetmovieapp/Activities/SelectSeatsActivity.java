@@ -1,5 +1,6 @@
 package com.example.planetmovieapp.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,8 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.planetmovieapp.MainActivity;
 import com.example.planetmovieapp.Objects.Hall;
 import com.example.planetmovieapp.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -158,18 +161,50 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         updateTimerUI(currentSeatsHallStatus); //update timer
         int numberOfSelectedTickets = seatsTakenByMe.size();
         selectedTicketTextView.setText("Number of selected tickets: " + numberOfSelectedTickets);
+        Log.d("kok","here11"+numberOfSelectedTickets);
 
         confirmButton.setOnClickListener(new View.OnClickListener() { //start new Activity
             @Override
             public void onClick(View v) {
                 if(numberOfSelectedTickets != 0) {//user has choose a seat, seat is confirmed on database
                     addCandidateSeatToSeatsHall(seatsTakenByMe);
-                    timerStatus = false;
                     countDownTimer.cancel();
-                    startNewActivity();
+                    timerStatus = false;
+
+                    Integer hallColumns = actualHall.getColumn();
+                    StringBuilder dialogSummaryTickets = new StringBuilder();
+                    dialogSummaryTickets.append("Number of selected tickets:" + numberOfSelectedTickets + "\n\n");
+                    for(Integer seat : listAllNewSelectedSeat){
+                        dialogSummaryTickets.append("*Seat Row:" + (((seat) / hallColumns) + 1) + " " + "Number:" + (((seat) % hallColumns) + 1) + "\n");
+                    }
+
+                    new MaterialAlertDialogBuilder(SelectSeatsActivity.this ,R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog)
+                            .setTitle("Confirm selected tickets:")
+                            .setMessage(dialogSummaryTickets)
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    countDownTimer.start();
+                                    timerStatus = true;
+                                    listAllNewSelectedSeat.clear();
+                                }
+                            })
+                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(SelectSeatsActivity.this,"Order Confirmed! redirecting main page... ",Toast.LENGTH_LONG).show();
+                                    addCandidateSeatToSeatsHall(seatsTakenByMe);
+                                    updateDatabase();
+                                    timerStatus = false;
+                                    startActivity(new Intent(SelectSeatsActivity.this, MainActivity.class));
+                                }
+                            })
+                            .show();
                 }
-                    else
-                    Toast.makeText(SelectSeatsActivity.this,"Please select seat first",Toast.LENGTH_SHORT).show();
+                    else {
+                    Toast.makeText(SelectSeatsActivity.this, "Please select seat first", Toast.LENGTH_SHORT).show();
+                    Log.d("kok","here"+numberOfSelectedTickets);
+                }
             }
         });
     }
@@ -182,7 +217,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                 currentSeatsHallStatus.set(i, SEAT_IS_TAKEN);
                 listAllNewSelectedSeat.add(i);
             }
-        updateDatabase();
     }
 
     /*Updates DB with the new currentSeatsHallStatus*/
@@ -200,12 +234,26 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     }
 
 
-//    /*Triggered when user decides to go back and not purchase ticket*/
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        countDownTimer.cancel();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(timerStatus)
+            countDownTimer.start();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        countDownTimer.cancel();
+    }
+
+    /*Triggered when user decides to go back and not purchase ticket*/
+    @Override
+    protected void onStop() {
+        super.onStop();
+        countDownTimer.cancel();
+    }
 
     /*When user decides to go back and not purchase ticket*/
     @Override
