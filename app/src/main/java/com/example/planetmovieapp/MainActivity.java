@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s!=null)
-                 filter(s.toString());
+                if(s!=null)
+                    filter(s.toString());
             }
         };
         searchText.addTextChangedListener(mSearchTw);

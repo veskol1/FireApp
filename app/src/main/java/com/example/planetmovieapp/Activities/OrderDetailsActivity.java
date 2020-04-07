@@ -31,6 +31,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         textView.setText("Your order has confirmed!\n\n" + "Number of tickets: " +  "\n\n");
         for(Integer seat :listAllNewSelectedSeat)
             textView.append("Row: " + (((seat) / hallColumns) + 1) + ", " + "Column: " + (((seat) % hallColumns) + 1) + "\n");
+        }
+
 
     }
 
