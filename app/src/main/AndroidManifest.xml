@@ -12,17 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".AdministrationActivities.GetStatisticsActivity" />
-        <activity
-            android:name=".AdministrationActivities.ShowStatisticsResult"
-            android:label="Show statistics"
-            android:parentActivityName=".AdministrationActivities.GetStatisticsActivity"></activity>
         <activity
             android:name=".LoginActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -69,7 +63,16 @@
             android:name=".AdministrationActivities.AddHallActivity"
             android:label="Add hall"
             android:parentActivityName=".AdministrationActivities.AdministrationActivity" />
-
+        <activity
+            android:name=".AdministrationActivities.GetStatisticsActivity"
+            android:label="Statistics"
+            android:parentActivityName=".AdministrationActivities.AdministrationActivity"
+            />
+        <activity
+            android:name=".AdministrationActivities.ShowStatisticsResult"
+            android:label="Show statistics"
+            android:parentActivityName=".AdministrationActivities.GetStatisticsActivity"
+            />
     </application>
 
 </manifest>

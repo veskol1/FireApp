@@ -22,10 +22,8 @@ public class ShowStatisticsResult extends AppCompatActivity {
             Intent intent = getIntent();
             movie_stat = (String) intent.getSerializableExtra("SELLING_STATISTICS");
             textView.setText(movie_stat);
-            Log.d("kok","koka!!" + movie_stat);
 
         }catch (Exception e){
-            Log.d("kokk","koka!!");
         }
     }
 }

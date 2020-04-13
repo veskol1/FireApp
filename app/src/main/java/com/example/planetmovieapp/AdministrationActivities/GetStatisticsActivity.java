@@ -71,7 +71,6 @@ public class GetStatisticsActivity extends AppCompatActivity implements View.OnC
         movieDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //restoreDefaults();
                 selectedMovie = (String)parent.getItemAtPosition(position);
             }
         });
