@@ -2,7 +2,6 @@ package com.example.planetmovieapp.AdministrationActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -32,13 +31,14 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
         MaterialButton addMovieButton = findViewById(R.id.add_movie_btn);
         MaterialButton addHallButton = findViewById(R.id.add_hall_btn);
         MaterialButton addShowTimeButton = findViewById(R.id.add_showtime_btn);
-        //MaterialButton statisticButton = findViewById(R.id.get_statistics_btn);
+        MaterialButton statisticButton = findViewById(R.id.get_statistics_btn);
 
         retrieveHallsFromDbToArray();
 
         addMovieButton.setOnClickListener(this);
         addHallButton.setOnClickListener(this);
         addShowTimeButton.setOnClickListener(this);
+        statisticButton.setOnClickListener(this);
     }
 
     public void retrieveHallsFromDbToArray(){
@@ -79,8 +79,8 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
                 break;
             }
             case R.id.get_statistics_btn : {
-//                Intent intent = new Intent(AdministrationActivity.this, StatisticActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(AdministrationActivity.this, GetStatisticsActivity.class);
+                startActivity(intent);
                 break;
             }
 
