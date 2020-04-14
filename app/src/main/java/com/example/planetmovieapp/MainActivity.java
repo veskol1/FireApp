@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();        // User is signed in
-        String userMail =  user.getEmail().split("@")[0];
+        String userMail =  user.getEmail().split("@")[0]; //gives us the left string before '@'
         userTextView.append(userMail);
 
         addSearchBar();
