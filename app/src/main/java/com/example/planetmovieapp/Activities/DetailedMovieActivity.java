@@ -27,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class DetailedMovieActivity extends AppCompatActivity  {
@@ -45,7 +46,6 @@ public class DetailedMovieActivity extends AppCompatActivity  {
     private ArrayList<String> filteredHoursArray;
     private final String YOUTUBE_THUMBNAIL_BASE_LINK = "https://img.youtube.com/vi/";
     private final String YOUTUBE_THUMBNAIL_END_LINK = "/mqdefault.jpg";
-    private final String YOUTUBE_TRAILER_BASE_LINK = "https://www.youtube.com/watch?v=";
     private AutoCompleteTextView dateDropdown;
     private AutoCompleteTextView hourDropdown;
 
@@ -66,17 +66,12 @@ public class DetailedMovieActivity extends AppCompatActivity  {
         filteredDatesArray = new ArrayList<>();
         filteredHoursArray = new ArrayList<>();
 
-        try {
-            Intent intent = getIntent();
-            selectedMovie = (Movie) intent.getSerializableExtra("selected.movie");
-            Log.d("kok","koka!!"+selectedMovie);
-        }catch (Exception e){
-            Log.d("kokk","koka!!");
-        }
+
+        Intent intent = getIntent();
+        selectedMovie = (Movie) intent.getSerializableExtra("selected.movie");
 
         inflateUserInterface();
         loadShowDateFromDb();
-
     }
 
     public void inflateUserInterface(){
@@ -86,18 +81,19 @@ public class DetailedMovieActivity extends AppCompatActivity  {
 
         movieNameTextView.setText(selectedMovie.getMovieName());
         movieGenreTextView.setText(selectedMovie.getGenre());
-        Float movieRating = ((float)selectedMovie.getRating()/10)*5;
+        Float movieRating = ((float)selectedMovie.getRating()/10)*5; //calculate the relative rating number 1-10 to 1-5 Stars
         movieRatingBar.setRating(movieRating);
         movieSummaryTextView.setText(selectedMovie.getSummary());
+        String linkId = selectedMovie.getTrailerLink().split("=")[1];;
 
-        String LinkToThumbnail = YOUTUBE_THUMBNAIL_BASE_LINK+selectedMovie.getTrailerLink()+YOUTUBE_THUMBNAIL_END_LINK;
+        String LinkToThumbnail = YOUTUBE_THUMBNAIL_BASE_LINK+linkId+YOUTUBE_THUMBNAIL_END_LINK;
         Picasso.get().load(LinkToThumbnail)
                 .into(trailerImageView);
 
         trailerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_TRAILER_BASE_LINK+selectedMovie.getTrailerLink())));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(selectedMovie.getTrailerLink())));
             }
         });
 
@@ -106,7 +102,7 @@ public class DetailedMovieActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if(!(selectedShowDate == null) &&!(selectedShowHour == null)) {
                     Intent intent = new Intent(DetailedMovieActivity.this, SelectSeatsActivity.class);
-                    intent.putExtra("movieId.to.seats", selectedMovie.getMovieId());
+                    intent.putExtra("selectedMovie.to.seats", selectedMovie);
                     intent.putExtra("selectedDate.to.seats", selectedShowDate);
                     intent.putExtra("selectedHour.to.seats", selectedShowHour);
                     startActivity(intent);
@@ -149,6 +145,7 @@ public class DetailedMovieActivity extends AppCompatActivity  {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedShowDate = (String)parent.getItemAtPosition(position);
                 loadShowHoursFromDb(selectedShowDate);
+                hourDropdown.setText("");
             }
         });
     }
@@ -163,9 +160,11 @@ public class DetailedMovieActivity extends AppCompatActivity  {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String dateFiltered = ds.child("date").getValue(String.class);
-                    if(dateFiltered.equals(date)) {
-                        filteredHoursArray.add(ds.child("hour").getValue(String.class));
+                    String filteredDate = ds.child("date").getValue(String.class);
+                    if(filteredDate.equals(date) ) { //find show with the selected date
+                        String filteredHour = ds.child("hour").getValue(String.class);
+                        if(!filteredHoursArray.contains(filteredHour))  //remote hours that are duplicates -> can happen when have 1 movie same data different halls
+                            filteredHoursArray.add(ds.child("hour").getValue(String.class));
                     }
                 }
                 inflateHoursDropdown();

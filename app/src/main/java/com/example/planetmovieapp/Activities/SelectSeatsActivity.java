@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,22 +24,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.planetmovieapp.MainActivity;
 import com.example.planetmovieapp.Objects.Hall;
+import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapter.ListItemClickListener{
-    private String showMovieId, showDateSelected, showHourSelected, showTimeId;
+    private String showMovieId, showDateSelected, showHourSelected, showTimeId, selectedHall;
     private DatabaseReference mDatabase;
     private ArrayList<String> currentSeatsHallStatus;
-    private TextView selectedTicketTextView;
+    private TextView selectedTicketTextView, selectHallTextView, MovieTitleTextView , movieDateTextView;
     private ImageView seatHallScreen;
+    private Movie selectedMovie;
     private Hall actualHall;
     private Button confirmButton;
     private RecyclerView seatsHallRecyclerView;
@@ -43,6 +51,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     private SeatsAdapter mAdapter;
     private ProgressBar progressBar;
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
+    private ArrayList<String> availableHalls = new ArrayList<>();
     boolean timerStatus = false; /*will hold the current status of the timerTextView */
     private TextView timerTextView;
     private CountDownTimer countDownTimer;
@@ -50,6 +59,9 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     final private String SEAT_EMPTY = "0";
     final private String SEAT_IS_TAKEN = "1";
     final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
+    private AutoCompleteTextView hallsDropdown;
+    private TextInputLayout hallsTextInputDropDown;
+    private int getListSelection ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,16 +73,101 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         progressBar = findViewById(R.id.seat_hall_progress_bar);
         seatHallScreen = findViewById(R.id.image_view_screen_hall);
         timerTextView = findViewById(R.id.timer);
+        hallsDropdown = findViewById(R.id.hall_dropdown);
+        hallsTextInputDropDown = findViewById(R.id.text_input_layout_hall_dropdown);
+        selectHallTextView = findViewById(R.id.text_select_hall);
+        MovieTitleTextView = findViewById(R.id.movie_title_text_view);
+        movieDateTextView = findViewById(R.id.movie_date_text_view);
 
         Intent intent = getIntent();
-        showMovieId = intent.getStringExtra("movieId.to.seats");
+        selectedMovie = (Movie) intent.getSerializableExtra("selectedMovie.to.seats");
+        showMovieId = selectedMovie.getMovieId();
         showDateSelected = intent.getStringExtra("selectedDate.to.seats");
         showHourSelected = intent.getStringExtra("selectedHour.to.seats");
 
-        getSeatsHallData();
+        MovieTitleTextView.setText(selectedMovie.getMovieName());
+        movieDateTextView.setText(showDateSelected);
+        loadAvailableHallsFromDb();
     }
 
-    public void getSeatsHallData(){
+    /*this function loads show data dates for the selected movie and updates the date data dropdown */
+    public void loadAvailableHallsFromDb(){
+        mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
+        Query query = mDatabase.orderByChild("movieId").equalTo(selectedMovie.getMovieId());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String movieId = (String) ds.child("movieId").getValue();
+                    String showDate = (String) ds.child("date").getValue();
+                    String showHour = (String) ds.child("hour").getValue();
+                    if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour)) {
+                        String filteredHall = (String) ds.child("hallName").getValue();
+                        availableHalls.add(filteredHall);
+                    }
+                }
+                if(availableHalls.size()>1)
+                    inflateHallsDropdown(); //more then 1 hall for the same movie & date & hour
+                else
+                    inflateHallDropdownOne(); //handle situation when we have only 1 hall for the showtime
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void inflateHallDropdownOne(){
+        selectedHall = availableHalls.get(0);
+        hallsDropdown.setText(selectedHall);
+        getSeatsHallData(selectedHall);
+    }
+
+
+    public void inflateHallsDropdown(){
+        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.dropdown_menu_popup_item, availableHalls);
+        hallsDropdown.setAdapter(adapter);
+
+        hallsDropdown.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if(timerStatus) {
+                        Toast.makeText(SelectSeatsActivity.this, "Can't switch halls while seats are selected ", Toast.LENGTH_SHORT).show();
+                        hallsDropdown.setVisibility(View.GONE);
+                    }
+                    else
+                        hallsDropdown.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
+        hallsDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectHallTextView.setVisibility(View.GONE);
+                if(!timerStatus) { //if timer is not! running
+                    selectedHall = (String) parent.getItemAtPosition(position);
+                    getSeatsHallData(selectedHall);
+
+                    hallsDropdown.clearFocus();
+                    hallsDropdown.setVisibility(View.VISIBLE);
+                }
+                else {
+                    hallsDropdown.setVisibility(View.GONE);
+                    hallsDropdown.clearFocus();
+                }
+            }
+        });
+
+    }
+
+
+    public void getSeatsHallData(String showHallSelected) {
+        progressBar.setVisibility(View.VISIBLE);
+        seatsHallRecyclerView.setVisibility(View.GONE);
+
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,7 +176,8 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                     String movieId = (String) ds.child("movieId").getValue();
                     String showDate = (String) ds.child("date").getValue();
                     String showHour = (String) ds.child("hour").getValue();
-                    if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour)) {
+                    String showHall = (String) ds.child("hallName").getValue();
+                    if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour) && showHallSelected.equals(showHall)) {
                         currentSeatsHallStatus = (ArrayList<String>) ds.child("seatsHall").getValue();
                         showTimeId = (String) ds.child("statusId").getValue(String.class);
                         actualHall = (Hall) ds.child("hall").getValue(Hall.class);
@@ -100,7 +198,9 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         mAdapter = new SeatsAdapter(this,SelectSeatsActivity.this, currentSeatsHallStatus, showTimeId);
         seatsHallRecyclerView.setLayoutManager(layoutManager);
         seatsHallRecyclerView.setAdapter(mAdapter);
+
         progressBar.setVisibility(View.GONE);
+        seatsHallRecyclerView.setVisibility(View.VISIBLE);
         seatHallScreen.setVisibility(View.VISIBLE);
     }
 
@@ -115,7 +215,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         timeLeftText += ":";
         if(seconds < 10) timeLeftText += "0";
         timeLeftText += seconds;
-        timerTextView.setText(timeLeftText);
+        timerTextView.setText("Tickets will be saved for: "+timeLeftText);
     }
 
     public void startTimer(){
@@ -130,8 +230,9 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             public void onFinish() {
                 timerStatus = false;
                 timerTextView.setText("");
-                selectedTicketTextView.setText("Number of selected tickets: " + 0);
+                selectedTicketTextView.setText("Selected tickets: " + 0);
                 mAdapter.updateSeatsUI(currentSeatsHallStatus);  // erase all 'green' selected seats
+                hallsDropdown.setVisibility(View.VISIBLE);   //Updates the visibility of the halls dropdown
             }
         }.start();
 
@@ -160,8 +261,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     public void onListItemClick(ArrayList<Integer> seatsTakenByMe, ArrayList<String> currentSeatsHallStatus) {
         updateTimerUI(currentSeatsHallStatus); //update timer
         int numberOfSelectedTickets = seatsTakenByMe.size();
-        selectedTicketTextView.setText("Number of selected tickets: " + numberOfSelectedTickets);
-        Log.d("kok","here11"+numberOfSelectedTickets);
+        selectedTicketTextView.setText("Selected tickets: " + numberOfSelectedTickets);
 
         confirmButton.setOnClickListener(new View.OnClickListener() { //start new Activity
             @Override
@@ -225,16 +325,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         mDatabase.child("seatsHall").setValue(currentSeatsHallStatus);
     }
 
-
-    public void startNewActivity(){
-        Intent intent = new Intent(SelectSeatsActivity.this, OrderDetailsActivity.class);
-        intent.putExtra("ListAllNewSelectedSeat",listAllNewSelectedSeat);
-        intent.putExtra("actualHall",actualHall);
-        startActivity(intent);
-    }
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -246,14 +336,16 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     @Override
     protected void onPause() {
         super.onPause();
-        countDownTimer.cancel();
+        if(timerStatus)
+            countDownTimer.cancel();
     }
 
     /*Triggered when user decides to go back and not purchase ticket*/
     @Override
     protected void onStop() {
         super.onStop();
-        countDownTimer.cancel();
+        if(timerStatus)
+            countDownTimer.cancel();
     }
 
     /*When user decides to go back and not purchase ticket*/

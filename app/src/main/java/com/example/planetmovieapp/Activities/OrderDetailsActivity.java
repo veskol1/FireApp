@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.planetmovieapp.MainActivity;
 import com.example.planetmovieapp.Objects.Hall;
+import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.R;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class OrderDetailsActivity extends AppCompatActivity {
     private TextView textView;
     private Hall actualHall;
+    private Movie selectedMovie;
     private ArrayList<Integer> listAllNewSelectedSeat = new ArrayList<>();
 
     @Override
