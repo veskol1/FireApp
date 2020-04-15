@@ -12,8 +12,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add new show time"
+        android:text="Remove show time"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:layout_marginBottom="24dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -25,7 +26,7 @@
         app:errorEnabled="true">
 
         <AutoCompleteTextView
-            android:id="@+id/movie_list_dropdown"
+            android:id="@+id/remove_movie_list_dropdown"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:editable="false"
@@ -38,15 +39,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:id="@+id/hall_layout_input"
+        android:id="@+id/remove_date_layout_input"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Select Hall"
+        android:hint="Select Date"
         app:errorEnabled="true"
         android:layout_marginTop="16dp">
 
         <AutoCompleteTextView
-            android:id="@+id/hall_list_dropdown"
+            android:id="@+id/remove_date_list_dropdown"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:editable="false"
@@ -57,27 +58,30 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/date_input_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:id="@+id/remove_hall_layout_input"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="Select Date"
-        app:endIconMode="clear_text">
+        android:hint="Select Hall"
+        app:errorEnabled="true"
+        android:layout_marginTop="16dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/date_picker_text_view"
+        <AutoCompleteTextView
+            android:id="@+id/remove_hall_list_dropdown"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:editable="false"
             android:gravity="center"
-            android:inputType="text" />
+            android:textSize="14sp"
+            />
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:id="@+id/hour_input_layout"
+        android:id="@+id/remove_hour_input_layout"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Select Hour"
@@ -85,7 +89,7 @@
         android:layout_marginTop="16dp">
 
         <AutoCompleteTextView
-            android:id="@+id/hour_list_dropdown"
+            android:id="@+id/remove_hour_list_dropdown"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:editable="false"
@@ -96,13 +100,13 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirm_add_button"
+        android:id="@+id/confirm_remove_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:layout_gravity="end"
-        android:text="Add"/>
+        android:text="Remove"/>
 
 
 </LinearLayout>

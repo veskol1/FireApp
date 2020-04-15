@@ -45,7 +45,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:layout_gravity="end"
-        android:text="confirm"/>
+        android:text="remove"/>
 
 
 </LinearLayout>
