@@ -86,7 +86,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         showHourSelected = intent.getStringExtra("selectedHour.to.seats");
 
         MovieTitleTextView.setText(selectedMovie.getMovieName());
-        movieDateTextView.setText(showDateSelected);
+        movieDateTextView.setText(showDateSelected+ ", "+showHourSelected);
         loadAvailableHallsFromDb();
     }
 
@@ -118,6 +118,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     }
 
     public void inflateHallDropdownOne(){
+        selectHallTextView.setVisibility(View.GONE);
         selectedHall = availableHalls.get(0);
         hallsDropdown.setText(selectedHall);
         getSeatsHallData(selectedHall);

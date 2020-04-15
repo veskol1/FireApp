@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".LoginActivity" android:launchMode="singleTop">
+        <activity android:name=".AdministrationActivities.AdministrationActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,7 +22,7 @@
         <activity android:name=".Activities.DetailedMovieActivity" android:label="Movie details" android:launchMode="singleTop" android:parentActivityName=".MainActivity" />
         <activity android:name=".Activities.SelectSeatsActivity" android:label="Select seats" android:launchMode="singleTop"  />
         <activity android:name=".AdministrationActivities.AdminLoginActivity" android:label="Administration Login" android:launchMode="singleTop" android:parentActivityName=".LoginActivity" />
-        <activity android:name=".AdministrationActivities.AdministrationActivity" android:label="Administration screen" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" />
+<!--        <activity android:name=".AdministrationActivities.AdministrationActivity" android:label="Administration screen" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" />-->
         <activity android:name=".AdministrationActivities.AddMovieActivity" android:label="Add movie to database" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdministrationActivity" />
         <activity android:name=".Activities.OrderDetailsActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".RegisterActivity" android:label="Register new account" android:parentActivityName=".LoginActivity" />
@@ -30,6 +30,7 @@
         <activity android:name=".AdministrationActivities.AddHallActivity" android:label="Add hall" android:parentActivityName=".AdministrationActivities.AdministrationActivity" />
         <activity android:name=".AdministrationActivities.GetStatisticsActivity" android:label="Statistics" android:parentActivityName=".AdministrationActivities.AdministrationActivity" />
         <activity android:name=".AdministrationActivities.ShowStatisticsResult" android:label="Show statistics" android:parentActivityName=".AdministrationActivities.GetStatisticsActivity" />
+        <activity android:name=".AdministrationActivities.RemoveMovieActivity" android:label="Remove Movie" android:parentActivityName=".AdministrationActivities.AdministrationActivity"/>
     </application>
 
 </manifest>

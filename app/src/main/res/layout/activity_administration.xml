@@ -34,6 +34,13 @@
             android:text=" Add new movie" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/remove_movie_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text=" Remove movie" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/add_showtime_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

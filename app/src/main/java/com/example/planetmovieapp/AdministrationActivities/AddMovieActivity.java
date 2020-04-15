@@ -111,7 +111,7 @@ public class AddMovieActivity extends AppCompatActivity  {
         selectedDateInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                materialDatePicker.show(getSupportFragmentManager(),"sdfds");
+                materialDatePicker.show(getSupportFragmentManager(),"TIME_PICKER");
             }
         });
 
@@ -180,7 +180,7 @@ public class AddMovieActivity extends AppCompatActivity  {
                     String hour = ds.child("hour").getValue(String.class);
                     if(date.equals(selectedDate) && hour.equals(selectedHour) && hall.equals(selectedHall)) {
                         updateIsLegal = false;
-                        Toast.makeText(AddMovieActivity.this, "Can't add movie to Database! \nPlease choose another date, hour, hall", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddMovieActivity.this, "Can't add movie to Database! \nPlease choose another date, hour, hall", Toast.LENGTH_LONG).show();
                         break;
                     }
                     else
@@ -191,7 +191,7 @@ public class AddMovieActivity extends AppCompatActivity  {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(AddMovieActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddMovieActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -217,7 +217,7 @@ public class AddMovieActivity extends AppCompatActivity  {
         ShowTimes showTimes = new ShowTimes(generatedShowId, generatedMovieId, selectedDate, selectedHour, selectedHallObj);
         mDatabase.child(generatedShowId).setValue(showTimes);
 
-        Toast.makeText(AddMovieActivity.this, "New movie and showtime was successfully added to Database", Toast.LENGTH_SHORT).show();
+        Toast.makeText(AddMovieActivity.this, "Movie and Showtime was added to Database", Toast.LENGTH_LONG).show();
     }
 
 
