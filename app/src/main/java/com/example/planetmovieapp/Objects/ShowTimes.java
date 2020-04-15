@@ -3,7 +3,7 @@ package com.example.planetmovieapp.Objects;
 import java.util.ArrayList;
 
 public class ShowTimes {
-    private String statusId;
+    private String showId;
     private String movieId;
     private String date;
     private String hour;
@@ -15,8 +15,8 @@ public class ShowTimes {
 
     public ShowTimes(){}
 
-    public ShowTimes(String statusId, String movieId, String date, String hour, Hall hall){
-        this.statusId=statusId;
+    public ShowTimes(String showId, String movieId, String date, String hour, Hall hall){
+        this.showId = showId;
         this.movieId = movieId;
         this.date = date;
         this.hour = hour;
@@ -28,17 +28,9 @@ public class ShowTimes {
         seatsHall = new ArrayList<>();
         for(int i = 0 ; i < (row*column); i++)
             seatsHall.add(i,"0");
-
-//        seatsHall = new ArrayList<>(row);
-//        for (int i=0; i<row; i++)
-//            seatsHall.add(new ArrayList<>(column));
-//
-//        for (int i=0; i<row; i++)
-//          for (int j=0; j<column; j++)
-//            seatsHall.get(i).add(j,0);
     }
 
-    public String getStatusId() { return statusId; }
+    public String getShowId() { return showId; }
 
     public String getMovieId() {
         return movieId;
@@ -62,8 +54,6 @@ public class ShowTimes {
         return seatsHall;
     }
 
-//    public List<List<Integer>> getSeatsHall() {
-//        return seatsHall;
-//    }
+
 
 }

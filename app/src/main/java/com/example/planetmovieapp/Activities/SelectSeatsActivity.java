@@ -180,7 +180,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                     String showHall = (String) ds.child("hallName").getValue();
                     if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour) && showHallSelected.equals(showHall)) {
                         currentSeatsHallStatus = (ArrayList<String>) ds.child("seatsHall").getValue();
-                        showTimeId = (String) ds.child("statusId").getValue(String.class);
+                        showTimeId = (String) ds.child("showId").getValue(String.class);
                         actualHall = (Hall) ds.child("hall").getValue(Hall.class);
                     }
                 }

@@ -29,15 +29,19 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administration);
         MaterialButton addMovieButton = findViewById(R.id.add_movie_btn);
-        MaterialButton removeMovieButton = findViewById(R.id.remove_movie_btn);
-        MaterialButton addHallButton = findViewById(R.id.add_hall_btn);
         MaterialButton addShowTimeButton = findViewById(R.id.add_showtime_btn);
+        MaterialButton addHallButton = findViewById(R.id.add_hall_btn);
+
+        MaterialButton removeMovieButton = findViewById(R.id.remove_movie_btn);
+        MaterialButton removeShowTimeButton = findViewById(R.id.remove_showtime_btn);
+
         MaterialButton statisticButton = findViewById(R.id.get_statistics_btn);
 
         retrieveHallsFromDbToArray();
 
         addMovieButton.setOnClickListener(this);
         removeMovieButton.setOnClickListener(this);
+        removeShowTimeButton.setOnClickListener(this);
         addHallButton.setOnClickListener(this);
         addShowTimeButton.setOnClickListener(this);
         statisticButton.setOnClickListener(this);
@@ -70,8 +74,8 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
                 startActivity(intent);
                 break;
             }
-            case R.id.remove_movie_btn : {
-                Intent intent = new Intent(AdministrationActivity.this, RemoveMovieActivity.class);
+            case R.id.add_showtime_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
                 startActivity(intent);
                 break;
             }
@@ -80,11 +84,18 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
                 startActivity(intent);
                 break;
             }
-            case R.id.add_showtime_btn : {
-                Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
+
+            case R.id.remove_movie_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, RemoveMovieActivity.class);
                 startActivity(intent);
                 break;
             }
+            case R.id.remove_showtime_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, RemoveShowTimeActivity.class);
+                startActivity(intent);
+                break;
+            }
+
             case R.id.get_statistics_btn : {
                 Intent intent = new Intent(AdministrationActivity.this, GetStatisticsActivity.class);
                 startActivity(intent);
