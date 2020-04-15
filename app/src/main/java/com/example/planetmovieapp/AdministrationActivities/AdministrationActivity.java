@@ -29,6 +29,7 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administration);
         MaterialButton addMovieButton = findViewById(R.id.add_movie_btn);
+        MaterialButton removeMovieButton = findViewById(R.id.remove_movie_btn);
         MaterialButton addHallButton = findViewById(R.id.add_hall_btn);
         MaterialButton addShowTimeButton = findViewById(R.id.add_showtime_btn);
         MaterialButton statisticButton = findViewById(R.id.get_statistics_btn);
@@ -36,6 +37,7 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
         retrieveHallsFromDbToArray();
 
         addMovieButton.setOnClickListener(this);
+        removeMovieButton.setOnClickListener(this);
         addHallButton.setOnClickListener(this);
         addShowTimeButton.setOnClickListener(this);
         statisticButton.setOnClickListener(this);
@@ -65,6 +67,11 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
             case R.id.add_movie_btn : {
                 Intent intent = new Intent(AdministrationActivity.this, AddMovieActivity.class);
                 intent.putExtra(HALL_ARRAY,hallsArrayList);
+                startActivity(intent);
+                break;
+            }
+            case R.id.remove_movie_btn : {
+                Intent intent = new Intent(AdministrationActivity.this, RemoveMovieActivity.class);
                 startActivity(intent);
                 break;
             }
