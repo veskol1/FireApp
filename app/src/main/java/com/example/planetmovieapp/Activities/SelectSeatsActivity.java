@@ -41,7 +41,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     private String showMovieId, showDateSelected, showHourSelected, showTimeId, selectedHall;
     private DatabaseReference mDatabase;
     private ArrayList<String> currentSeatsHallStatus;
-    private TextView selectedTicketTextView, selectHallTextView, MovieTitleTextView , movieDateTextView;
+    private TextView selectedTicketTextView, MovieTitleTextView , movieDateTextView;
     private ImageView seatHallScreen;
     private Movie selectedMovie;
     private Hall actualHall;
@@ -74,7 +74,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         timerTextView = findViewById(R.id.timer);
         hallsDropdown = findViewById(R.id.hall_dropdown);
         hallsTextInputDropDown = findViewById(R.id.text_input_layout_hall_dropdown);
-        selectHallTextView = findViewById(R.id.text_select_hall);
         MovieTitleTextView = findViewById(R.id.movie_title_text_view);
         movieDateTextView = findViewById(R.id.movie_date_text_view);
 
@@ -90,7 +89,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         loadAvailableHallsFromDb();
     }
 
-    /*this function get the coressponding halls for the selected movie and showtime*/
+    /*this function get the corresponding halls for the selected movie and showtime*/
     public void loadAvailableHallsFromDb(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         Query query = mDatabase.orderByChild("movieId").equalTo(selectedMovie.getMovieId());
@@ -106,10 +105,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                         availableHalls.add(filteredHall);
                     }
                 }
-                if(availableHalls.size()>1)
-                    inflateHallsDropdown(); //more then 1 hall for the same movie & date & hour
-                else
-                    inflateHallDropdownOne(); //handle situation when we have only 1 hall for the showtime
+                    inflateHallsDropdown();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -117,15 +113,13 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         });
     }
 
-    public void inflateHallDropdownOne(){
-        selectHallTextView.setVisibility(View.GONE);
-        selectedHall = availableHalls.get(0);
-        hallsDropdown.setText(selectedHall);
-        getSeatsHallData(selectedHall);
-    }
-
 
     public void inflateHallsDropdown(){
+        //this is for the only for the first inflate
+        hallsDropdown.setText(availableHalls.get(0));
+        selectedHall = availableHalls.get(0);
+        getSeatsHallData();
+
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.dropdown_menu_popup_item, availableHalls);
         hallsDropdown.setAdapter(adapter);
 
@@ -133,13 +127,12 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedHall = (String) parent.getItemAtPosition(position);
-                getSeatsHallData(selectedHall);
+                getSeatsHallData();
             }
         });
     }
 
-
-    public void getSeatsHallData(String showHallSelected) {
+    public void getSeatsHallData () {
         progressBar.setVisibility(View.VISIBLE);
         seatsHallRecyclerView.setVisibility(View.GONE);
 
@@ -152,7 +145,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                     String showDate = (String) ds.child("date").getValue();
                     String showHour = (String) ds.child("hour").getValue();
                     String showHall = (String) ds.child("hallName").getValue();
-                    if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour) && showHallSelected.equals(showHall)) {
+                    if (showMovieId.equals(movieId) && showDateSelected.equals(showDate) && showHourSelected.equals(showHour) && selectedHall.equals(showHall)) {
                         currentSeatsHallStatus = (ArrayList<String>) ds.child("seatsHall").getValue();
                         showTimeId = (String) ds.child("showId").getValue(String.class);
                         actualHall = (Hall) ds.child("hall").getValue(Hall.class);
@@ -248,7 +241,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             hallsTextInputDropDown.setEnabled(true);
         }
     }
-    
+
 
     /*This function is triggers every time seat is pressed and has main functionality :
     * Timer status : on/off -> update UI
