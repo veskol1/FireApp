@@ -34,9 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_edit);
         regButton = findViewById(R.id.reg_button);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();  //get instance of the database
-        DatabaseReference ref = database.getReference();      // get reference to  database
-
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +66,5 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

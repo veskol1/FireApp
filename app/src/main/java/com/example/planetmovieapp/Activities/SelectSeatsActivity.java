@@ -37,6 +37,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/*SelectSeatsActivity represents the current hall status, at this activity
+* the user can select and buy tickets for the selected movie.
+*/
 public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapter.ListItemClickListener{
     private String showMovieId, showDateSelected, showHourSelected, showTimeId, selectedHall;
     private DatabaseReference mDatabase;

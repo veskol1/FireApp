@@ -2,6 +2,7 @@ package com.example.planetmovieapp.Objects;
 
 import java.io.Serializable;
 
+/*Hall class represents the Hall in our App and in our DB as table name*/
 public class Hall implements Serializable {
 
     private String hallId;

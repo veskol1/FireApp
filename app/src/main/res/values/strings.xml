@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Planet Movie - Login</string>
+    <string name="app_name">Movie Planet</string>
 
     <string-array name="days_array">
         <item>Monday</item>

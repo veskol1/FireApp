@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher1"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher1_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -24,7 +24,6 @@
         <activity android:name=".AdministrationActivities.AdminLoginActivity" android:label="Administration Login" android:launchMode="singleTop" android:parentActivityName=".LoginActivity" />
         <activity android:name=".AdministrationActivities.AdministrationActivity" android:label="Administration screen" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdminLoginActivity" />
         <activity android:name=".AdministrationActivities.AddMovieActivity" android:label="Add movie to database" android:launchMode="singleTop" android:parentActivityName=".AdministrationActivities.AdministrationActivity" />
-        <activity android:name=".Activities.OrderDetailsActivity" android:parentActivityName=".MainActivity" />
         <activity android:name=".RegisterActivity" android:label="Register new account" android:parentActivityName=".LoginActivity" />
         <activity android:name=".AdministrationActivities.AddShowTime" android:label="Add show time" android:parentActivityName=".AdministrationActivities.AdministrationActivity" />
         <activity android:name=".AdministrationActivities.AddHallActivity" android:label="Add hall" android:parentActivityName=".AdministrationActivities.AdministrationActivity" />

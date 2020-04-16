@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -26,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-
+/*MainActivity is inflating the movies posters using Recyclerview*/
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
     }
 
+    /*get movies data from DB and sent them to the adapter to inflate the movie posters*/
     public void getMovieData(){
         moviesList = new ArrayList<>();
         mDataBase = FirebaseDatabase.getInstance().getReference("Movies");
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s) { //after text is entered into the search bar
                 if(s!=null)
                     filter(s.toString());
             }
@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    //filter the movies by the search and update the adapter
     public void filter(String text){
         ArrayList<Movie> filteredList = new ArrayList<>();
         for(Movie movie : moviesList){
@@ -114,6 +116,5 @@ public class MainActivity extends AppCompatActivity {
         }
         mAdapter.filterList(filteredList);
     }
-
 
 }

@@ -30,6 +30,10 @@ import com.squareup.picasso.Picasso;
 import java.sql.Time;
 import java.util.ArrayList;
 
+/*DetailedMovieActivity is showing all details about the movie
+* at this Activity the user can get all the details about the selected movie
+* and choose date and hour for the showtime
+*/
 public class DetailedMovieActivity extends AppCompatActivity  {
     private TextView movieNameTextView;
     private TextView movieGenreTextView;

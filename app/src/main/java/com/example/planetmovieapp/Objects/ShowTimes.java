@@ -2,6 +2,7 @@ package com.example.planetmovieapp.Objects;
 
 import java.util.ArrayList;
 
+/*ShowTimes class represents the Movies show time in our App and in our DB as table name*/
 public class ShowTimes {
     private String showId;
     private String movieId;
@@ -10,7 +11,6 @@ public class ShowTimes {
     private String hallName;
     private Hall hall;
     private ArrayList<String> seatsHall;
-    //private List<List<Integer>> seatsHall;
 
 
     public ShowTimes(){}
@@ -25,6 +25,7 @@ public class ShowTimes {
         int row = hall.getRow();
         int column = hall.getColumn();
 
+        /*every new ShowTime instance is initialized with zeros(empty seat) seatsHall that represents the seats in the Hall */
         seatsHall = new ArrayList<>();
         for(int i = 0 ; i < (row*column); i++)
             seatsHall.add(i,"0");
@@ -53,7 +54,5 @@ public class ShowTimes {
     public ArrayList<String> getSeatsHall() {
         return seatsHall;
     }
-
-
 
 }
