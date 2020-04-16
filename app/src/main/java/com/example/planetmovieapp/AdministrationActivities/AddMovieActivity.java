@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
+/*AddMovieActivity adds movie to our DB and new ShowTime for corresponding movie*/
 public class AddMovieActivity extends AppCompatActivity  {
     public final String HALL_ARRAY ="com.project.arraylist.halls";
     public final String ERROR_NUMBER_NOT_BETWEEN_ZERO_TO_TEN ="Rating should between 1-10";

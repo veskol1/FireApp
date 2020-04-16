@@ -2,6 +2,7 @@ package com.example.planetmovieapp.Objects;
 
 import java.io.Serializable;
 
+/*Movie class represents the Movie details in our App and in our DB as table name*/
 public class Movie implements Serializable {
     private String movieId;
     private String movieName;
@@ -24,7 +25,6 @@ public class Movie implements Serializable {
         this.summary = summary;
         this.trailerLink = trailerLink;
         this.posterLink = posterLink;
-        //this.hallId = hallId;
 
     }
 
@@ -51,7 +51,5 @@ public class Movie implements Serializable {
     }
 
     public String getPosterLink() { return posterLink; }
-
-    //public String getHallId(){ return hallId; }
 
 }

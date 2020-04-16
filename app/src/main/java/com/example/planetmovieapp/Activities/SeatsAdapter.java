@@ -21,6 +21,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/*SeatsAdapter as (MovieAdapter) is part of the RecyclerView flow
+* it corresponding on inflating from DB the current state of the hall seats
+* and interact with his parent Activity SelectSeatsActivity using the interface onListItemClick()
+ */
 public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHolder> {
     private ArrayList<String> currentSeatsHallStatus;  // will hold the seats hall status
     private ArrayList<Integer> selectedSeats = new ArrayList<Integer>();  //will hold all selected seats numbers by the user
@@ -28,7 +32,6 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
     private String showTimeId;  // showtime unique id
     private DatabaseReference mDatabase; // reference to DB
     final private ListItemClickListener mOnClickListener;
-    private Integer numberOfSelectedTickets = 0;
     final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
     final private String SEAT_WAS_ALREADY_TAKEN = "1";
     final private String SEAT_EMPTY = "0";
@@ -41,7 +44,7 @@ public class SeatsAdapter extends RecyclerView.Adapter<SeatsAdapter.StatusHallHo
         this.showTimeId = showTimeId;
     }
 
-    /*interface used to communicate with the SelectSeatsActivity*/
+    /*interface used to communicate with the SelectSeatsActivity when seat is clicked*/
     public interface ListItemClickListener {
         void onListItemClick(ArrayList<Integer> seatsTakenByMe, ArrayList<String> currentSeatsHallStatus);
     }

@@ -17,6 +17,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/*MovieAdapter class is part of implementation of RecyclerView
+* this adapter corresponding on inflating from DB all movies poster to the user
+* it must override the function :
+* onCreateViewHolder() -> will be the holder viewer
+* onBindViewHolder() -> will bind all the data to this viewHolder
+* getItemCount() -> will return the size of the items we want to load(all the images)
+ */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private ArrayList<Movie> movieLists;
     private Context context;
@@ -25,6 +32,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         context = ct;
         this.movieLists = movieList;
     }
+
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,11 +48,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie currentMovie = movieLists.get(position);
         holder.mMovieName.setText(currentMovie.getMovieName());
 
+        //picasso is used to load images into android project using their URL
          Picasso.get()
                  .load(currentMovie.getPosterLink())
-                 .error(R.drawable.ic_assistant)
+                 .error(R.drawable.ic_error_black_24dp)
                  .into(holder.mViewImage);
 
+         //itemCardView is holding the whole image poster
          holder.itemCardView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -61,7 +71,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movieLists.size();
     }
 
-
+    //this inner class is returned from onCreateViewHolder(),meaning we need to implement this MovieViewHolder again as part of recyclerview flow
      public class MovieViewHolder extends RecyclerView.ViewHolder{
          ImageView mViewImage;
          TextView mMovieName;
@@ -72,7 +82,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             mViewImage = itemView.findViewById(R.id.image_view);
             mMovieName = itemView.findViewById(R.id.movie_name_tv);
             itemCardView = itemView.findViewById(R.id.item_view);
-
         }
     }
 

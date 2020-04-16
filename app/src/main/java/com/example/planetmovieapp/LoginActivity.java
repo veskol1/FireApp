@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+    /*this function uses Firebase authentication to compare user to password*/
     private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
+    /*inflate menu(the 3 dots on the right top screen*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    /*On click on the AdminLoginActivity Activity*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == (R.id.settings_menu)) {
@@ -92,6 +93,5 @@ public class LoginActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }
