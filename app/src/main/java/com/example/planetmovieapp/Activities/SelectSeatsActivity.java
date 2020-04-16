@@ -61,7 +61,6 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
     final private String SEAT_CANDIDATE_TO_BE_TAKEN = "2";
     private AutoCompleteTextView hallsDropdown;
     private TextInputLayout hallsTextInputDropDown;
-    private int getListSelection ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,10 +86,11 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
 
         MovieTitleTextView.setText(selectedMovie.getMovieName());
         movieDateTextView.setText(showDateSelected+ ", "+showHourSelected);
+
         loadAvailableHallsFromDb();
     }
 
-    /*this function loads show data dates for the selected movie and updates the date data dropdown */
+    /*this function get the coressponding halls for the selected movie and showtime*/
     public void loadAvailableHallsFromDb(){
         mDatabase = FirebaseDatabase.getInstance().getReference("ShowTimes");
         Query query = mDatabase.orderByChild("movieId").equalTo(selectedMovie.getMovieId());
@@ -129,39 +129,13 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.dropdown_menu_popup_item, availableHalls);
         hallsDropdown.setAdapter(adapter);
 
-        hallsDropdown.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if(timerStatus) {
-                        Toast.makeText(SelectSeatsActivity.this, "Can't switch halls while seats are selected ", Toast.LENGTH_SHORT).show();
-                        hallsDropdown.setVisibility(View.GONE);
-                    }
-                    else
-                        hallsDropdown.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-
         hallsDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectHallTextView.setVisibility(View.GONE);
-                if(!timerStatus) { //if timer is not! running
-                    selectedHall = (String) parent.getItemAtPosition(position);
-                    getSeatsHallData(selectedHall);
-
-                    hallsDropdown.clearFocus();
-                    hallsDropdown.setVisibility(View.VISIBLE);
-                }
-                else {
-                    hallsDropdown.setVisibility(View.GONE);
-                    hallsDropdown.clearFocus();
-                }
+                selectedHall = (String) parent.getItemAtPosition(position);
+                getSeatsHallData(selectedHall);
             }
         });
-
     }
 
 
@@ -229,14 +203,20 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
             }
             @Override
             public void onFinish() {
-                timerStatus = false;
-                timerTextView.setText("");
-                selectedTicketTextView.setText("Selected tickets: " + 0);
-                mAdapter.updateSeatsUI(currentSeatsHallStatus);  // erase all 'green' selected seats
-                hallsDropdown.setVisibility(View.VISIBLE);   //Updates the visibility of the halls dropdown
+                updateUiOnTimerFinish();
             }
         }.start();
+    }
 
+
+    /*Updates UI when the timer time is finished*/
+    public void updateUiOnTimerFinish(){
+        timerStatus = false;
+        timerTextView.setText("");
+        selectedTicketTextView.setText("Selected tickets: " + 0);
+        hallsDropdown.setEnabled(true);     //halls dropdown can be changed
+        hallsTextInputDropDown.setEnabled(true);
+        mAdapter.updateSeatsUI(currentSeatsHallStatus);  // erase all 'green' selected seats
     }
 
     /*Update timer status and UI on clicking while seats hall*/
@@ -257,11 +237,30 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         }
     }
 
-    /*dsfsdf*/
+
+    public void updateHallDropdownUIState(int numberOfSelectedTickets){
+        if(timerStatus) {
+            hallsDropdown.setEnabled(false);
+            hallsTextInputDropDown.setEnabled(false);
+        }
+        else {
+            hallsDropdown.setEnabled(true);
+            hallsTextInputDropDown.setEnabled(true);
+        }
+    }
+    
+
+    /*This function is triggers every time seat is pressed and has main functionality :
+    * Timer status : on/off -> update UI
+    * Halls dropdown : clickable/not clickable -> can't switch to another hall while seat is selected
+    * Dialog message : to confirm the purchase or not
+    * */
     @Override
     public void onListItemClick(ArrayList<Integer> seatsTakenByMe, ArrayList<String> currentSeatsHallStatus) {
-        updateTimerUI(currentSeatsHallStatus); //update timer
         int numberOfSelectedTickets = seatsTakenByMe.size();
+        updateTimerUI(currentSeatsHallStatus); //update timer
+        updateHallDropdownUIState(numberOfSelectedTickets);  //update hall dropdown
+
         selectedTicketTextView.setText("Selected tickets: " + numberOfSelectedTickets);
 
         confirmButton.setOnClickListener(new View.OnClickListener() { //start new Activity
@@ -272,42 +271,49 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
                     countDownTimer.cancel();
                     timerStatus = false;
 
-                    Integer hallColumns = actualHall.getColumn();
-                    StringBuilder dialogSummaryTickets = new StringBuilder();
-                    dialogSummaryTickets.append("Number of selected tickets:" + numberOfSelectedTickets + "\n\n");
-                    for(Integer seat : listAllNewSelectedSeat){
-                        dialogSummaryTickets.append("*Seat Row:" + (((seat) / hallColumns) + 1) + " " + "Number:" + (((seat) % hallColumns) + 1) + "\n");
-                    }
+                    inflateUIDialog(seatsTakenByMe, numberOfSelectedTickets);
 
-                    new MaterialAlertDialogBuilder(SelectSeatsActivity.this ,R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog)
-                            .setTitle("Confirm selected tickets:")
-                            .setMessage(dialogSummaryTickets)
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    countDownTimer.start();
-                                    timerStatus = true;
-                                    listAllNewSelectedSeat.clear();
-                                }
-                            })
-                            .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(SelectSeatsActivity.this,"Order Confirmed! redirecting main page... ",Toast.LENGTH_LONG).show();
-                                    addCandidateSeatToSeatsHall(seatsTakenByMe);
-                                    updateDatabase();
-                                    timerStatus = false;
-                                    startActivity(new Intent(SelectSeatsActivity.this, MainActivity.class));
-                                }
-                            })
-                            .show();
                 }
-                    else {
+                    else
                     Toast.makeText(SelectSeatsActivity.this, "Please select seat first", Toast.LENGTH_SHORT).show();
-                    Log.d("kok","here"+numberOfSelectedTickets);
-                }
             }
         });
+    }
+
+
+    /*inflate dialog summary message when purchase button is clicked*/
+    public void inflateUIDialog(ArrayList<Integer> seatsTakenByMe, int numberOfSelectedTickets){
+
+        Integer hallColumns = actualHall.getColumn();
+        StringBuilder dialogSummaryTickets = new StringBuilder();
+        dialogSummaryTickets.append("Number of selected tickets:" + numberOfSelectedTickets + "\n\n");
+        for(Integer seat : listAllNewSelectedSeat){
+            dialogSummaryTickets.append("*Seat Row:" + (((seat) / hallColumns) + 1) + " " + "Number:" + (((seat) % hallColumns) + 1) + "\n");
+        }
+
+        new MaterialAlertDialogBuilder(SelectSeatsActivity.this ,R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog)
+                .setTitle("Confirm selected tickets:")
+                .setMessage(dialogSummaryTickets)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        countDownTimer.start();
+                        timerStatus = true;
+                        listAllNewSelectedSeat.clear();
+                    }
+                })
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(SelectSeatsActivity.this,"Order Confirmed! redirecting main page... ",Toast.LENGTH_LONG).show();
+                        addCandidateSeatToSeatsHall(seatsTakenByMe);
+                        updateDatabase();
+                        timerStatus = false;
+                        startActivity(new Intent(SelectSeatsActivity.this, MainActivity.class));
+                    }
+                })
+                .show();
+
     }
 
 
@@ -326,6 +332,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
         mDatabase.child("seatsHall").setValue(currentSeatsHallStatus);
     }
 
+    /*When user decides to go back and not purchase ticket*/
     @Override
     protected void onResume() {
         super.onResume();
@@ -334,6 +341,7 @@ public class SelectSeatsActivity extends AppCompatActivity implements SeatsAdapt
 
     }
 
+    /*When user decides to go purchase ticket and dialog message appears*/
     @Override
     protected void onPause() {
         super.onPause();
