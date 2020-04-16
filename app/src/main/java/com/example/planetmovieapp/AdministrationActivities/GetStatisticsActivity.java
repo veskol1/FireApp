@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -107,7 +108,7 @@ public class GetStatisticsActivity extends AppCompatActivity implements View.OnC
                     String currMovieId = ds.child("movieId").getValue(String.class);
                     if(currMovieId.equals(movieId)){
                         currentSeatsHallStatus = (ArrayList<String>) ds.child("seatsHall").getValue();
-                        selectedMovieStat.append("Date: " + (ds.child("date").getValue(String.class)) + ", Hour: " + (ds.child("hour").getValue(String.class)));
+                        selectedMovieStat.append("Date: " + (ds.child("date").getValue(String.class)) + ", Hour: " + (ds.child("hour").getValue(String.class)) + ", Hall name: " + (ds.child("hallName").getValue(String.class)));
                         int counter = 0;
                         for(int i = 0; i < currentSeatsHallStatus.size(); i++){
                             if(currentSeatsHallStatus.get(i).equals(SEAT_IS_TAKEN)){
@@ -132,7 +133,12 @@ public class GetStatisticsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        updateMovieId();
-        getMovieStat();
+        if(selectedMovie != null) {
+            updateMovieId();
+            getMovieStat();
+        }
+        else {
+            Toast.makeText(GetStatisticsActivity.this,"Please select movie",Toast.LENGTH_SHORT).show();
+        }
     }
 }
