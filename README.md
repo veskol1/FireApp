@@ -19,6 +19,7 @@ Run the project using Shift+F10 or the Play icon in Android studio
 
 ### For personal use:
 
-Transfer the apk file to your Android smartphone and install the file (the system may ask your permissions for installing 'unknown source'
+Transfer the apk file to your Android smartphone
 
+Install the file (the system may ask your permissions for installing 'unknown source')
 
