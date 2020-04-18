@@ -75,7 +75,7 @@ public class AdministrationActivity extends AppCompatActivity implements View.On
                 break;
             }
             case R.id.add_showtime_btn : {
-                Intent intent = new Intent(AdministrationActivity.this, AddShowTime.class);
+                Intent intent = new Intent(AdministrationActivity.this, AddShowTimeActivity.class);
                 startActivity(intent);
                 break;
             }

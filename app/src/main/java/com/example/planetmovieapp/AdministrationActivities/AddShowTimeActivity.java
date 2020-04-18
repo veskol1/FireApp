@@ -1,7 +1,6 @@
 package com.example.planetmovieapp.AdministrationActivities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.planetmovieapp.Objects.Hall;
-import com.example.planetmovieapp.Objects.Movie;
 import com.example.planetmovieapp.Objects.ShowTimes;
 import com.example.planetmovieapp.R;
 import com.google.android.material.datepicker.CalendarConstraints;
@@ -31,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 /*This class is responsible on adding new show time for selected movie that is already in database*/
-public class AddShowTime extends AppCompatActivity {
+public class AddShowTimeActivity extends AppCompatActivity {
     private AutoCompleteTextView movieDropdown, hallDropdown, hourDropdown;
     private String selectedMovie, movieId, selectedHall, selectedDate, selectedHour;
     private DatabaseReference mDatabase;
@@ -67,10 +65,10 @@ public class AddShowTime extends AppCompatActivity {
                 if(selectedMovie != null && selectedHall != null && selectedDate != null && selectedHour != null) {
                     updateMovieId();
                     updateHall();
-                    Toast.makeText(AddShowTime.this, "added successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddShowTimeActivity.this, "added successfully", Toast.LENGTH_LONG).show();
                 }
                 else
-                    Toast.makeText(AddShowTime.this, "Please select all fields", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddShowTimeActivity.this, "Please select all fields", Toast.LENGTH_LONG).show();
             }
         });
     }

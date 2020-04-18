@@ -41,7 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn(usernameLogField.getText().toString(), passwordField.getText().toString());
+                try {
+                    String email = usernameLogField.getText().toString();
+                    String pass = passwordField.getText().toString();
+                    signIn(email, pass);
+                }catch (Exception e){
+                    Toast.makeText(LoginActivity.this,"Please try again!",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
