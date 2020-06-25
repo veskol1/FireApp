@@ -2,20 +2,6 @@
 
 Movie Planet is system for ordering movie tickets using firebase DB.
 
-## Installation
-
-### For debug:
-
-Install Andorid Studio 3.6 
-
-Extract  Planet-Movie.zip 
-
-Open the project file
-
-Create new emulator or use your phone as emulator,
-
-Run the project using Shift+F10 or the Play icon in Android studio
-
 
 ### Screen shots:
 MainActivity
@@ -29,3 +15,7 @@ Movie detailes
 Select seats
 
 <img src="https://user-images.githubusercontent.com/13125281/85692715-4b448c80-b6de-11ea-807e-20d08b5ecff6.jpeg" height="800" width="369">
+
+Administartion page
+
+<img src="https://user-images.githubusercontent.com/13125281/85692737-50094080-b6de-11ea-846f-1ffd77abac61.jpeg" height="800" width="369">
