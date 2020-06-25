@@ -25,3 +25,7 @@ MainActivity
 Movie detailes
 
 <img src="https://user-images.githubusercontent.com/13125281/85692725-4da6e680-b6de-11ea-9d19-e069c3d3ae76.jpeg" height="800" width="369">
+
+Select seats
+
+<img src="https://user-images.githubusercontent.com/13125281/85692715-4b448c80-b6de-11ea-807e-20d08b5ecff6.jpeg" height="800" width="369">
