@@ -17,9 +17,6 @@ Create new emulator or use your phone as emulator,
 Run the project using Shift+F10 or the Play icon in Android studio
 
 
-### For personal use:
+### Screen shots:
 
-Transfer the apk file to your Android smartphone
-
-Install the file (the system may ask your permissions for installing 'unknown source')
-
+https://user-images.githubusercontent.com/13125281/85692720-4c75b980-b6de-11ea-88e1-53e6f3c5c9e9.jpeg
