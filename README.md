@@ -2,6 +2,13 @@
 
 Movie Planet is system for ordering movie tickets using firebase DB.
 
+### Used in this project
+Firebase - Realtime for storing the movies/halls/showtimes details
+FirebaseAuth for login/register user
+Retrofit - for fetching data from DB and updating the DB
+Recyclerview - to show the movies list and the hall seats representation
+MaterialDesign - all app the desgin uses Material design 
+
 
 ### Screen shots:
 MainActivity
